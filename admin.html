@@ -49,6 +49,10 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
           Add Product
         </button>
+        <button class="nav-item" onclick="showTab('categories',this)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Categories
+        </button>
         <button class="nav-item" onclick="showTab('spotlight',this)">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           Spotlight
@@ -205,6 +209,15 @@
         </div>
       </div>
 
+      <!-- TAB: CATEGORIES -->
+      <div class="tab-content" id="tab-categories">
+        <p class="tab-desc">Upload a photo for each category. Leave blank to keep the default illustrated icon.</p>
+        <div class="cat-admin-grid" id="catAdminGrid"></div>
+        <div class="cat-admin-footer">
+          <button class="btn-save-spotlight" onclick="saveCategories()">Save &amp; Publish to Store</button>
+        </div>
+      </div>
+
       <!-- TAB: SPOTLIGHT -->
       <div class="tab-content" id="tab-spotlight">
         <div class="spotlight-admin-wrap">
@@ -278,6 +291,7 @@
   </div>
 
   <script src="js/products.js"></script>
+  <script src="js/categories.js"></script>
   <script src="js/admin.js"></script>
 </body>
 </html>

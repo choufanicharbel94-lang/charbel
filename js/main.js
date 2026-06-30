@@ -562,6 +562,40 @@ function toggleSearch() {
 }
 function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
 
+// ── CATEGORIES GRID ──
+function renderCategories() {
+  const grid = document.getElementById('categoriesGrid');
+  if (!grid) return;
+  const cats = loadCategories();
+  const counts = {};
+  products.forEach(p => { counts[p.category] = (counts[p.category] || 0) + 1; });
+  const total = products.length;
+
+  const allCard = `
+  <div class="cat-card cat-all" onclick="filterByCategory('all')">
+    <div class="cat-visual cat-all-visual">
+      <div class="all-grid">
+        <span class="all-mini shoe-mini"></span><span class="all-mini shirt-mini"></span>
+        <span class="all-mini short-mini"></span><span class="all-mini cap-mini"></span>
+      </div>
+      <div class="cat-glow cat-glow-white"></div>
+    </div>
+    <div class="cat-info"><h3>All Items</h3><p>View Everything</p><span class="cat-count">${total} items</span></div>
+  </div>`;
+
+  grid.innerHTML = cats.map(c => {
+    const cnt = counts[c.key] || 0;
+    const visual = c.image
+      ? `<img src="${c.image}" alt="${c.label}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" onerror="this.style.display='none'" />`
+      : c.svg;
+    return `
+    <div class="cat-card ${c.svgClass}" onclick="filterByCategory('${c.key}')">
+      <div class="cat-visual">${visual}<div class="cat-glow ${c.glowClass}"></div></div>
+      <div class="cat-info"><h3>${c.label}</h3><p>${c.sub}</p><span class="cat-count">${cnt} items</span></div>
+    </div>`;
+  }).join('') + allCard;
+}
+
 // ── SPOTLIGHT CAROUSEL ──
 let spIndex = 0;
 let spItems = [];
@@ -671,5 +705,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(e) {}
   }
   renderProducts(products);
+  renderCategories();
   initSpotlight();
 });

@@ -50,11 +50,12 @@ function showTab(name, btn) {
   document.getElementById('tab-' + name).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  const titles = { products: ['Products', 'Manage your product catalog'], stock: ['Stock Management', 'Click any number to update stock'], add: ['Add Product', 'Add a new product to the store'], spotlight: ['Spotlight Carousel', 'Choose and order which products appear in the featured section'], orders: ['Orders', 'Manage incoming orders'] };
+  const titles = { products: ['Products', 'Manage your product catalog'], stock: ['Stock Management', 'Click any number to update stock'], add: ['Add Product', 'Add a new product to the store'], categories: ['Categories', 'Edit photos for each category shown on the shop'], spotlight: ['Spotlight Carousel', 'Choose and order which products appear in the featured section'], orders: ['Orders', 'Manage incoming orders'] };
   document.getElementById('tabTitle').textContent = titles[name][0];
   document.getElementById('tabSub').textContent = titles[name][1];
   document.getElementById('topbarActions').style.display = name === 'products' ? 'flex' : 'none';
   if (name === 'add') resetForm();
+  if (name === 'categories') renderCatAdmin();
   if (name === 'spotlight') renderSpotlightAdmin();
 }
 
@@ -591,4 +592,87 @@ function spDrop(e, toIdx) {
   spDragIdx = null;
   renderSpSelected();
   renderSpPool();
+}
+
+// ── CATEGORIES ADMIN ──
+function renderCatAdmin() {
+  const cats = loadCategories();
+  const counts = {};
+  data.forEach(p => { counts[p.category] = (counts[p.category] || 0) + 1; });
+
+  document.getElementById('catAdminGrid').innerHTML = cats.map(c => {
+    const hasImg = !!c.image;
+    return `
+    <div class="cat-admin-card" data-key="${c.key}">
+      <div class="cat-admin-preview">
+        ${hasImg
+          ? `<img src="${c.image}" alt="${c.label}" class="cat-admin-img" id="catPrev_${c.key}" />`
+          : `<div class="cat-admin-svg" id="catPrev_${c.key}">${c.svg}</div>`}
+        ${hasImg ? `<button class="cat-admin-clear" onclick="clearCatImage('${c.key}')">✕ Remove</button>` : ''}
+      </div>
+      <div class="cat-admin-info">
+        <h4>${c.label} <span class="sp-pool-meta">${counts[c.key] || 0} products</span></h4>
+        <div class="form-group" style="margin-top:10px">
+          <label>Subtitle</label>
+          <input type="text" class="cat-sub-input" data-key="${c.key}" value="${c.sub}" placeholder="e.g. Sneakers & Running" />
+        </div>
+        <div class="form-group">
+          <label>Image</label>
+          <div class="image-input-row">
+            <input type="text" class="cat-url-input" data-key="${c.key}" value="${c.image || ''}"
+              placeholder="Paste URL or upload →" oninput="previewCatImg('${c.key}',this.value)" />
+            <label class="btn-upload-img btn-upload-sm" title="Upload from device">
+              ↑
+              <input type="file" accept="image/*" style="display:none" onchange="uploadCatImg('${c.key}',this)" />
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function previewCatImg(key, url) {
+  const prev = document.getElementById('catPrev_' + key);
+  if (!prev) return;
+  if (url) {
+    prev.outerHTML = `<img src="${url}" alt="${key}" class="cat-admin-img" id="catPrev_${key}" onerror="this.style.opacity='.3'" />`;
+  } else {
+    const cat = loadCategories().find(c => c.key === key);
+    prev.outerHTML = `<div class="cat-admin-svg" id="catPrev_${key}">${cat ? cat.svg : ''}</div>`;
+  }
+}
+
+function uploadCatImg(key, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataUrl = e.target.result;
+    const urlInput = document.querySelector(`.cat-url-input[data-key="${key}"]`);
+    if (urlInput) urlInput.value = dataUrl;
+    previewCatImg(key, dataUrl);
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearCatImage(key) {
+  const urlInput = document.querySelector(`.cat-url-input[data-key="${key}"]`);
+  if (urlInput) urlInput.value = '';
+  previewCatImg(key, '');
+  renderCatAdmin();
+}
+
+function saveCategories() {
+  const toSave = defaultCategories.map(def => {
+    const urlInput = document.querySelector(`.cat-url-input[data-key="${def.key}"]`);
+    const subInput = document.querySelector(`.cat-sub-input[data-key="${def.key}"]`);
+    return {
+      key: def.key,
+      image: urlInput ? urlInput.value.trim() : '',
+      sub: subInput ? subInput.value.trim() : def.sub
+    };
+  });
+  localStorage.setItem(CAT_KEY, JSON.stringify(toSave));
+  adminToast('Categories saved! Store updated.');
 }

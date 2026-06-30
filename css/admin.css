@@ -344,3 +344,16 @@ input, select, textarea { font-family: inherit; }
 @media (max-width: 900px) {
   .spotlight-admin-cols { grid-template-columns: 1fr; }
 }
+
+/* ── CATEGORIES ADMIN ── */
+.cat-admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.cat-admin-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+.cat-admin-preview { height: 180px; background: var(--dark); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.cat-admin-img { width: 100%; height: 100%; object-fit: cover; }
+.cat-admin-svg { width: 80%; max-height: 140px; display: flex; align-items: center; justify-content: center; }
+.cat-admin-svg svg { width: 100%; height: 100%; }
+.cat-admin-clear { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.75); border: 1px solid var(--border); color: var(--red); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 100px; cursor: pointer; backdrop-filter: blur(4px); transition: all .2s; }
+.cat-admin-clear:hover { background: var(--red); color: var(--white); border-color: var(--red); }
+.cat-admin-info { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.cat-admin-info h4 { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.cat-admin-footer { margin-top: 24px; }

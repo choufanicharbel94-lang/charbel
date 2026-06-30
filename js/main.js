@@ -555,4 +555,15 @@ function toggleSearch() {
 }
 function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
 
-document.addEventListener('DOMContentLoaded', () => renderProducts(products));
+document.addEventListener('DOMContentLoaded', () => {
+  // Use admin-saved data if available, otherwise fall back to default products
+  const saved = localStorage.getItem('shoo_products');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      products.length = 0;
+      parsed.forEach(p => products.push(p));
+    } catch(e) {}
+  }
+  renderProducts(products);
+});

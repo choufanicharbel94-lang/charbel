@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Shoo Sports LB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-box">
+      <div class="login-logo">
+        <span class="logo-shoo">SHOO</span><span class="logo-exclaim">!</span><span class="logo-sports">SPORTS</span>
+      </div>
+      <p class="login-sub">Admin Dashboard</p>
+      <div class="login-form">
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPass" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()" />
+        </div>
+        <button class="btn-login" onclick="doLogin()">Enter Dashboard</button>
+        <p class="login-hint" id="loginError"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div class="admin-wrap" id="adminWrap" style="display:none">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-logo">
+        <span class="logo-shoo">SHOO</span><span class="logo-exclaim">!</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" onclick="showTab('products',this)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          Products
+        </button>
+        <button class="nav-item" onclick="showTab('stock',this)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          Stock
+        </button>
+        <button class="nav-item" onclick="showTab('add',this)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Add Product
+        </button>
+        <button class="nav-item" onclick="showTab('orders',this)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Orders
+        </button>
+      </nav>
+      <div class="sidebar-bottom">
+        <a href="index.html" target="_blank" class="btn-view-store">View Store ↗</a>
+        <button class="btn-logout" onclick="logout()">Logout</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+
+      <!-- TOP BAR -->
+      <div class="admin-topbar">
+        <div>
+          <h1 id="tabTitle">Products</h1>
+          <p id="tabSub">Manage your product catalog</p>
+        </div>
+        <div class="topbar-actions" id="topbarActions">
+          <button class="btn-add-new" onclick="showTab('add',null)">+ Add Product</button>
+        </div>
+      </div>
+
+      <!-- TOAST -->
+      <div class="admin-toast" id="adminToast"></div>
+
+      <!-- TAB: PRODUCTS -->
+      <div class="tab-content active" id="tab-products">
+        <div class="table-controls">
+          <input type="text" class="table-search" placeholder="Search products..." oninput="filterTable(this.value)" />
+          <select onchange="filterCategory(this.value)">
+            <option value="">All Categories</option>
+            <option>Shoes</option><option>T-Shirts</option><option>Shorts</option>
+            <option>Pants</option><option>Slides</option><option>Caps</option><option>Outerwear</option>
+          </select>
+        </div>
+        <div class="products-table-wrap">
+          <table class="products-table" id="productsTable">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Brand</th>
+                <th>Price</th>
+                <th>Total Stock</th>
+                <th>Badge</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: STOCK -->
+      <div class="tab-content" id="tab-stock">
+        <p class="tab-desc">Click any size quantity to edit it directly.</p>
+        <div class="stock-filter">
+          <input type="text" placeholder="Search product..." oninput="filterStock(this.value)" />
+          <select onchange="filterStockCategory(this.value)">
+            <option value="">All Categories</option>
+            <option>Shoes</option><option>T-Shirts</option><option>Shorts</option>
+            <option>Pants</option><option>Slides</option><option>Caps</option><option>Outerwear</option>
+          </select>
+        </div>
+        <div id="stockList"></div>
+      </div>
+
+      <!-- TAB: ADD / EDIT PRODUCT -->
+      <div class="tab-content" id="tab-add">
+        <div class="product-form" id="productForm">
+          <input type="hidden" id="editId" value="" />
+          <div class="form-row">
+            <div class="form-group">
+              <label>Product Name *</label>
+              <input type="text" id="pName" placeholder="e.g. Nike Air Force 1" />
+            </div>
+            <div class="form-group">
+              <label>Brand *</label>
+              <input type="text" id="pBrand" placeholder="e.g. Nike" list="brandList" />
+              <datalist id="brandList">
+                <option value="On Running"/><option value="Nike"/><option value="Gymshark"/>
+                <option value="Adidas"/><option value="Crocs"/><option value="Vans"/>
+                <option value="Jordan"/><option value="Alexander McQueen"/><option value="New Era"/>
+                <option value="Fear of God Essentials"/>
+              </datalist>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="pCategory" onchange="updateSizeSuggestions()">
+                <option value="">Select...</option>
+                <option>Shoes</option><option>T-Shirts</option><option>Shorts</option>
+                <option>Pants</option><option>Slides</option><option>Caps</option><option>Outerwear</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Price (USD) *</label>
+              <input type="number" id="pPrice" placeholder="120" min="0" />
+            </div>
+            <div class="form-group">
+              <label>Badge</label>
+              <select id="pBadge">
+                <option value="">None</option>
+                <option>New</option><option>Hot</option><option>Trending</option>
+                <option>Limited</option><option>Classic</option><option>Luxury</option>
+                <option>Premium</option><option>Kids</option><option>Exclusive</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea id="pDesc" rows="3" placeholder="Product description..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Product Image URL</label>
+            <input type="text" id="pImage" placeholder="https://images.unsplash.com/photo-..." oninput="previewImage()" />
+            <div class="img-preview-wrap">
+              <img id="imgPreview" src="" alt="" style="display:none" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Colors (comma separated)</label>
+            <input type="text" id="pColors" placeholder="Black, White, Gray" />
+          </div>
+          <div class="form-group">
+            <label>Sizes & Stock</label>
+            <p class="hint">Add sizes and set stock for each. Click + to add a size row.</p>
+            <div id="sizesEditor"></div>
+            <button class="btn-add-size" onclick="addSizeRow()">+ Add Size</button>
+          </div>
+          <div class="form-actions">
+            <button class="btn-cancel-form" onclick="resetForm()">Cancel</button>
+            <button class="btn-save-product" onclick="saveProduct()">Save Product</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: ORDERS -->
+      <div class="tab-content" id="tab-orders">
+        <div class="orders-info">
+          <div class="info-card">
+            <span class="info-icon">📦</span>
+            <h3>Orders are managed via WhatsApp</h3>
+            <p>When customers place orders through the website, they are sent directly to your WhatsApp number. You'll receive a full order summary including items, sizes, colors, total price, and delivery address.</p>
+            <p>For card payments and COD orders, you'll need to confirm delivery manually.</p>
+            <a href="https://wa.me/96176123456" target="_blank" class="btn-open-wa">Open WhatsApp Business ↗</a>
+          </div>
+          <div class="info-card tip-card">
+            <span class="info-icon">💡</span>
+            <h3>Tip: Upgrade to accept real card payments</h3>
+            <p>To process real card payments online, integrate with <strong>Stripe</strong> or <strong>PayMob</strong> (supports Lebanon). Ask your developer to add the payment gateway keys.</p>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- EDIT MODAL (for quick inline edits) -->
+  <div class="edit-overlay" id="editOverlay" onclick="closeEditModal()"></div>
+  <div class="edit-modal" id="editModal">
+    <div class="edit-modal-header">
+      <h3 id="editModalTitle">Edit Product</h3>
+      <button onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="edit-modal-body" id="editModalBody"></div>
+  </div>
+
+  <!-- CONFIRM DELETE -->
+  <div class="confirm-overlay" id="confirmOverlay"></div>
+  <div class="confirm-box" id="confirmBox">
+    <h3>Delete Product?</h3>
+    <p id="confirmMsg">This action cannot be undone.</p>
+    <div class="confirm-actions">
+      <button onclick="closeConfirm()">Cancel</button>
+      <button class="btn-confirm-delete" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+
+  <script src="js/products.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

@@ -266,7 +266,7 @@ img { max-width: 100%; display: block; }
 .badge-exclusive { background: var(--black); color: var(--accent); border: 1px solid var(--accent); }
 
 .product-thumb {
-  height: 220px; display: flex; align-items: center; justify-content: center;
+  aspect-ratio: 3 / 4; height: auto; display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden; cursor: pointer;
   background: var(--dark);
 }
@@ -336,9 +336,10 @@ img { max-width: 100%; display: block; }
 .modal-left {
   background: linear-gradient(135deg, var(--card), var(--dark));
   display: flex; align-items: center; justify-content: center;
-  border-radius: 20px 0 0 20px; padding: 40px; position: relative; flex-direction: column;
+  border-radius: 20px 0 0 20px; padding: 0; position: relative; flex-direction: column;
+  overflow: hidden;
 }
-.modal-img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px 0 0 20px; }
+.modal-img { width: 100%; height: 100%; object-fit: contain; border-radius: 20px 0 0 20px; background: var(--dark); }
 .modal-brand-bg { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 4px; color: rgba(255,255,255,0.18); margin-top: 16px; }
 .modal-right { padding: 40px; display: flex; flex-direction: column; gap: 20px; }
 .modal-brand { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; }

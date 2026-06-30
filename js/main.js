@@ -568,10 +568,21 @@ let spItems = [];
 let spAutoTimer = null;
 
 function initSpotlight() {
-  // Pick featured products: badged ones first, then fill to 6
-  const badged = products.filter(p => p.badge);
-  const rest = products.filter(p => !p.badge);
-  spItems = [...badged, ...rest].slice(0, 6);
+  // Use admin-curated spotlight order if saved, otherwise auto-pick badged first
+  let spItems_raw = null;
+  try {
+    const saved = localStorage.getItem('shoo_spotlight');
+    if (saved) {
+      const ids = JSON.parse(saved);
+      spItems_raw = ids.map(id => products.find(p => p.id === id)).filter(Boolean);
+    }
+  } catch(e) {}
+  if (!spItems_raw || !spItems_raw.length) {
+    const badged = products.filter(p => p.badge);
+    const rest = products.filter(p => !p.badge);
+    spItems_raw = [...badged, ...rest].slice(0, 6);
+  }
+  spItems = spItems_raw;
 
   const track = document.getElementById('spotlightTrack');
   const dots = document.getElementById('spDots');

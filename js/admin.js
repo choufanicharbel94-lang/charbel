@@ -50,11 +50,12 @@ function showTab(name, btn) {
   document.getElementById('tab-' + name).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  const titles = { products: ['Products', 'Manage your product catalog'], stock: ['Stock Management', 'Click any number to update stock'], add: ['Add Product', 'Add a new product to the store'], orders: ['Orders', 'Manage incoming orders'] };
+  const titles = { products: ['Products', 'Manage your product catalog'], stock: ['Stock Management', 'Click any number to update stock'], add: ['Add Product', 'Add a new product to the store'], spotlight: ['Spotlight Carousel', 'Choose and order which products appear in the featured section'], orders: ['Orders', 'Manage incoming orders'] };
   document.getElementById('tabTitle').textContent = titles[name][0];
   document.getElementById('tabSub').textContent = titles[name][1];
   document.getElementById('topbarActions').style.display = name === 'products' ? 'flex' : 'none';
   if (name === 'add') resetForm();
+  if (name === 'spotlight') renderSpotlightAdmin();
 }
 
 // ── PRODUCTS TABLE ──
@@ -471,4 +472,123 @@ function adminToast(msg, type='success') {
   t.className = `admin-toast show ${type==='error'?'toast-error':''}`;
   clearTimeout(t._timer);
   t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── SPOTLIGHT ADMIN ──
+const SP_KEY = 'shoo_spotlight';
+let spSelectedIds = [];
+let spPoolFilter = '';
+
+function loadSpotlightIds() {
+  try { return JSON.parse(localStorage.getItem(SP_KEY)) || null; } catch(e) { return null; }
+}
+
+function renderSpotlightAdmin() {
+  const saved = loadSpotlightIds();
+  // Validate saved ids still exist in data
+  spSelectedIds = saved ? saved.filter(id => data.find(p => p.id === id)) : autoSpotlightIds();
+  renderSpPool();
+  renderSpSelected();
+}
+
+function autoSpotlightIds() {
+  const badged = data.filter(p => p.badge);
+  const rest   = data.filter(p => !p.badge);
+  return [...badged, ...rest].slice(0, 6).map(p => p.id);
+}
+
+function renderSpPool() {
+  const pool = document.getElementById('spPool');
+  const q = spPoolFilter.toLowerCase();
+  const list = data.filter(p =>
+    (!q || p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q))
+  );
+  pool.innerHTML = list.map(p => {
+    const inSpot = spSelectedIds.includes(p.id);
+    const total = Object.values(p.availability).reduce((a,b)=>a+b,0);
+    return `
+    <div class="sp-pool-item ${inSpot ? 'sp-in-spotlight' : ''}" onclick="spToggleProduct(${p.id})">
+      <img src="${p.image||''}" alt="${p.name}" onerror="this.style.display='none'" />
+      <div class="sp-pool-info">
+        <span class="sp-pool-name">${p.name}</span>
+        <span class="sp-pool-meta">${p.brand} · ${p.category} · $${p.price}</span>
+      </div>
+      <div class="sp-pool-status">
+        ${inSpot ? '<span class="sp-in-badge">★ In Spotlight</span>' : '<span class="sp-add-badge">+ Add</span>'}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSpSelected() {
+  const el = document.getElementById('spSelected');
+  document.getElementById('spCount').textContent = `${spSelectedIds.length} / 6`;
+
+  if (!spSelectedIds.length) {
+    el.innerHTML = '<p class="sp-empty-hint">No products selected. Click products on the left to add them.</p>';
+    return;
+  }
+
+  el.innerHTML = spSelectedIds.map((id, idx) => {
+    const p = data.find(x => x.id === id);
+    if (!p) return '';
+    return `
+    <div class="sp-sel-item" draggable="true" data-id="${id}"
+      ondragstart="spDragStart(event,${idx})" ondragover="spDragOver(event)" ondrop="spDrop(event,${idx})" ondragend="spDragEnd()">
+      <div class="sp-sel-drag">⠿</div>
+      <span class="sp-sel-num">${idx + 1}</span>
+      <img src="${p.image||''}" alt="${p.name}" onerror="this.style.display='none'" />
+      <div class="sp-sel-info">
+        <span class="sp-sel-name">${p.name}</span>
+        <span class="sp-sel-meta">${p.brand} · $${p.price}${p.badge ? ' · '+p.badge : ''}</span>
+      </div>
+      <button class="sp-sel-remove" onclick="spRemove(${id})">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function filterSpPool(val) { spPoolFilter = val; renderSpPool(); }
+
+function spToggleProduct(id) {
+  if (spSelectedIds.includes(id)) {
+    spRemove(id); return;
+  }
+  if (spSelectedIds.length >= 6) { adminToast('Max 6 products in spotlight', 'error'); return; }
+  spSelectedIds.push(id);
+  renderSpPool();
+  renderSpSelected();
+}
+
+function spRemove(id) {
+  spSelectedIds = spSelectedIds.filter(x => x !== id);
+  renderSpPool();
+  renderSpSelected();
+}
+
+function resetSpotlight() {
+  spSelectedIds = autoSpotlightIds();
+  localStorage.removeItem(SP_KEY);
+  renderSpPool();
+  renderSpSelected();
+  adminToast('Reset to automatic selection');
+}
+
+function saveSpotlight() {
+  localStorage.setItem(SP_KEY, JSON.stringify(spSelectedIds));
+  adminToast('Spotlight saved! Store updated.');
+}
+
+// drag-and-drop reorder
+let spDragIdx = null;
+function spDragStart(e, idx) { spDragIdx = idx; e.currentTarget.classList.add('sp-dragging'); }
+function spDragEnd() { document.querySelectorAll('.sp-sel-item').forEach(el => el.classList.remove('sp-dragging','sp-drag-over')); }
+function spDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('sp-drag-over'); }
+function spDrop(e, toIdx) {
+  e.preventDefault();
+  if (spDragIdx === null || spDragIdx === toIdx) return;
+  const moved = spSelectedIds.splice(spDragIdx, 1)[0];
+  spSelectedIds.splice(toIdx, 0, moved);
+  spDragIdx = null;
+  renderSpSelected();
+  renderSpPool();
 }

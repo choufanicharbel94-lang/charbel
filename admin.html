@@ -167,15 +167,26 @@
             <textarea id="pDesc" rows="3" placeholder="Product description..."></textarea>
           </div>
           <div class="form-group">
-            <label>Product Image URL</label>
-            <input type="text" id="pImage" placeholder="https://images.unsplash.com/photo-..." oninput="previewImage()" />
+            <label>Default Product Image</label>
+            <p class="hint">Used when no color-specific image is set.</p>
+            <div class="image-input-row">
+              <input type="text" id="pImage" placeholder="Paste image URL..." oninput="previewImage()" />
+              <label class="btn-upload-img" title="Upload from device">
+                ↑ Upload
+                <input type="file" id="pImageFile" accept="image/*" style="display:none" onchange="handleImageUpload(this,'pImage','imgPreview')" />
+              </label>
+            </div>
             <div class="img-preview-wrap">
               <img id="imgPreview" src="" alt="" style="display:none" />
             </div>
           </div>
           <div class="form-group">
             <label>Colors (comma separated)</label>
-            <input type="text" id="pColors" placeholder="Black, White, Gray" />
+            <input type="text" id="pColors" placeholder="Black, White, Gray" oninput="updateColorImages()" />
+          </div>
+          <div class="form-group" id="colorImagesGroup" style="display:none">
+            <label>Color-Specific Images <span class="hint-inline">(optional — overrides default image per color)</span></label>
+            <div id="colorImagesEditor"></div>
           </div>
           <div class="form-group">
             <label>Sizes & Stock</label>

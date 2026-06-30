@@ -96,7 +96,7 @@ function openModal(id) {
   const modal = document.getElementById('productModal');
   document.getElementById('modalInner').innerHTML = `
     <div class="modal-left">
-      <img src="${p.image}" alt="${p.name}" class="modal-img" onerror="this.style.background='#222'" />
+      <img src="${p.image}" alt="${p.name}" class="modal-img" id="modalMainImg" onerror="this.style.background='#222'" />
       ${p.badge ? `<span class="product-badge badge-${p.badge.toLowerCase().replace(/\s/g,'-')}">${p.badge}</span>` : ''}
     </div>
     <div class="modal-right">
@@ -107,7 +107,7 @@ function openModal(id) {
       <div class="modal-section">
         <label class="modal-label">Color</label>
         <div class="modal-colors">
-          ${p.colors.map((c,i) => `<button class="modal-color-btn ${i===0?'active':''}" onclick="selectColor(this)">${c}</button>`).join('')}
+          ${p.colors.map((c,i) => `<button class="modal-color-btn ${i===0?'active':''}" onclick="selectColor(this,${p.id})" data-color="${c}">${c}</button>`).join('')}
         </div>
       </div>
       <div class="modal-section">
@@ -159,9 +159,15 @@ function selectSize(btn) {
   btn.classList.add('selected');
   document.getElementById('selectedSizeLabel').textContent = `— ${btn.dataset.size}`;
 }
-function selectColor(btn) {
+function selectColor(btn, productId) {
   document.querySelectorAll('.modal-color-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  const color = btn.dataset.color;
+  const p = products.find(x => x.id === productId);
+  if (p && p.colorImages && p.colorImages[color]) {
+    const img = document.getElementById('modalMainImg');
+    if (img) { img.src = p.colorImages[color]; }
+  }
 }
 
 // ── CART ──

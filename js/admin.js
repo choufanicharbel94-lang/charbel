@@ -227,6 +227,8 @@ function resetForm() {
   document.getElementById('pImage').value = '';
   document.getElementById('pColors').value = '';
   document.getElementById('imgPreview').style.display = 'none';
+  document.getElementById('colorImagesEditor').innerHTML = '';
+  document.getElementById('colorImagesGroup').style.display = 'none';
   document.getElementById('sizesEditor').innerHTML = '';
   document.querySelector('.btn-save-product').textContent = 'Save Product';
   document.querySelector('.product-form h2') && (document.querySelector('.product-form h2').textContent = 'Add Product');
@@ -265,6 +267,89 @@ function previewImage() {
   else img.style.display = 'none';
 }
 
+function handleImageUpload(input, urlFieldId, previewId) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataUrl = e.target.result;
+    document.getElementById(urlFieldId).value = dataUrl;
+    const img = document.getElementById(previewId);
+    img.src = dataUrl;
+    img.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleColorImageUpload(input, color) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataUrl = e.target.result;
+    const urlInput = input.closest('.color-img-row').querySelector('.color-img-url');
+    urlInput.value = dataUrl;
+    const preview = input.closest('.color-img-row').querySelector('.color-img-preview');
+    preview.src = dataUrl;
+    preview.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function updateColorImages(existingMap) {
+  const colorsVal = document.getElementById('pColors').value;
+  const colors = colorsVal.split(',').map(c => c.trim()).filter(Boolean);
+  const group = document.getElementById('colorImagesGroup');
+  const editor = document.getElementById('colorImagesEditor');
+
+  if (!colors.length) { group.style.display = 'none'; return; }
+  group.style.display = 'block';
+
+  // Preserve existing values
+  const currentMap = {};
+  editor.querySelectorAll('.color-img-row').forEach(row => {
+    const c = row.dataset.color;
+    const url = row.querySelector('.color-img-url').value;
+    if (c && url) currentMap[c] = url;
+  });
+  const map = existingMap || currentMap;
+
+  editor.innerHTML = colors.map(c => {
+    const val = map[c] || '';
+    return `
+    <div class="color-img-row" data-color="${c}">
+      <span class="color-img-label">${c}</span>
+      <div class="color-img-inputs">
+        <input type="text" class="color-img-url" placeholder="Image URL or upload →" value="${val}"
+          oninput="previewColorImg(this)" />
+        <label class="btn-upload-img btn-upload-sm" title="Upload from device">
+          ↑
+          <input type="file" accept="image/*" style="display:none" onchange="handleColorImageUpload(this,'${c}')" />
+        </label>
+        ${val ? `<img class="color-img-preview" src="${val}" style="display:block" onerror="this.style.display='none'" />` :
+                 `<img class="color-img-preview" src="" style="display:none" />`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function previewColorImg(input) {
+  const url = input.value;
+  const preview = input.closest('.color-img-row').querySelector('.color-img-preview');
+  preview.src = url;
+  preview.style.display = url ? 'block' : 'none';
+}
+
+function getColorImages() {
+  const map = {};
+  document.querySelectorAll('#colorImagesEditor .color-img-row').forEach(row => {
+    const c = row.dataset.color;
+    const url = row.querySelector('.color-img-url').value.trim();
+    if (c && url) map[c] = url;
+  });
+  return map;
+}
+
 function editProduct(id) {
   const p = data.find(x => x.id === id);
   if (!p) return;
@@ -281,6 +366,7 @@ function editProduct(id) {
     document.getElementById('pImage').value = p.image || '';
     document.getElementById('pColors').value = p.colors.join(', ');
     previewImage();
+    updateColorImages(p.colorImages || {});
     const editor = document.getElementById('sizesEditor');
     editor.innerHTML = '';
     p.sizes.forEach(s => addSizeRow(s, p.availability[s] || 0));
@@ -298,6 +384,7 @@ function saveProduct() {
   const desc    = document.getElementById('pDesc').value.trim();
   const image   = document.getElementById('pImage').value.trim();
   const colors  = document.getElementById('pColors').value.split(',').map(c=>c.trim()).filter(Boolean);
+  const colorImages = getColorImages();
 
   if (!name || !brand || !cat || isNaN(price)) {
     adminToast('Please fill all required fields', 'error'); return;
@@ -320,13 +407,13 @@ function saveProduct() {
     // Update existing
     const idx = data.findIndex(x => x.id === parseInt(editId));
     if (idx > -1) {
-      data[idx] = { ...data[idx], name, brand, category: cat, price, badge, description: desc, image, colors, sizes, availability };
+      data[idx] = { ...data[idx], name, brand, category: cat, price, badge, description: desc, image, colors, colorImages, sizes, availability };
       adminToast(`"${name}" updated!`);
     }
   } else {
     // Add new
     const newId = Math.max(...data.map(p=>p.id), 0) + 1;
-    data.push({ id: newId, name, brand, category: cat, price, badge, description: desc, image, colors: colors.length ? colors : ['Default'], sizes, availability });
+    data.push({ id: newId, name, brand, category: cat, price, badge, description: desc, image, colors: colors.length ? colors : ['Default'], colorImages, sizes, availability });
     adminToast(`"${name}" added to store!`);
   }
 

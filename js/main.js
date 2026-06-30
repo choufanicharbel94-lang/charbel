@@ -3,6 +3,113 @@ let currentCategory = 'all';
 let currentSort = 'default';
 let searchQuery = '';
 
+// ── SVG PRODUCT VISUALS ──
+function getProductSVG(p) {
+  const gradId = `g${p.id}`;
+  const colors = getBrandColors(p);
+  const svgs = {
+    'Shoes': `<svg viewBox="0 0 220 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="110" cy="92" rx="88" ry="9" fill="rgba(0,0,0,0.2)"/>
+      <path d="M18 72 C18 72 30 46 58 40 L95 34 L132 30 C155 28 170 34 180 44 C186 52 186 60 178 67 C172 71 158 74 140 75 L24 76 C19 76 16 74 18 72Z" fill="url(#${gradId}a)"/>
+      <path d="M58 40 L65 20 C67 14 75 13 80 17 L98 34" fill="url(#${gradId}b)"/>
+      <path d="M120 52 L168 48" stroke="rgba(255,255,255,0.25)" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M24 76 L140 75" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+      <defs>
+        <linearGradient id="${gradId}a" x1="18" y1="28" x2="186" y2="76" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
+        </linearGradient>
+        <linearGradient id="${gradId}b" x1="58" y1="13" x2="98" y2="40" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="${colors[2]}"/><stop offset="100%" stop-color="${colors[0]}"/>
+        </linearGradient>
+      </defs>
+    </svg>`,
+    'T-Shirts': `<svg viewBox="0 0 200 175" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M58 28 C58 28 48 18 36 18 L8 38 C6 40 6 44 8 46 L26 58 L26 155 C26 158 28 160 31 160 L169 160 C172 160 174 158 174 155 L174 58 L192 46 C194 44 194 40 192 38 L164 18 C152 18 142 28 142 28 C132 42 68 42 58 28Z" fill="url(#${gradId}a)"/>
+      <path d="M58 28 C68 42 132 42 142 28" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
+      <path d="M80 95 L120 95" stroke="rgba(255,255,255,0.15)" stroke-width="10" stroke-linecap="round"/>
+      <defs>
+        <linearGradient id="${gradId}a" x1="8" y1="18" x2="194" y2="160" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
+        </linearGradient>
+      </defs>
+    </svg>`,
+    'Shorts': `<svg viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 18 L182 18 C182 18 168 112 158 132 C150 148 140 152 128 152 L106 152 L106 82 L94 82 L94 152 L72 152 C60 152 50 148 42 132 C32 112 18 18 18 18Z" fill="url(#${gradId}a)"/>
+      <rect x="18" y="18" width="164" height="14" rx="7" fill="rgba(255,255,255,0.2)"/>
+      <defs>
+        <linearGradient id="${gradId}a" x1="18" y1="18" x2="182" y2="152" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
+        </linearGradient>
+      </defs>
+    </svg>`,
+    'Pants': `<svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M22 18 L178 18 C178 18 165 118 160 162 C158 180 148 190 136 192 L108 192 L105 112 L95 112 L92 192 L64 192 C52 190 42 180 40 162 C35 118 22 18 22 18Z" fill="url(#${gradId}a)"/>
+      <rect x="22" y="18" width="156" height="14" rx="7" fill="rgba(255,255,255,0.2)"/>
+      <defs>
+        <linearGradient id="${gradId}a" x1="22" y1="18" x2="178" y2="192" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
+        </linearGradient>
+      </defs>
+    </svg>`,
+    'Slides': `<svg viewBox="0 0 220 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="110" cy="94" rx="88" ry="9" fill="rgba(0,0,0,0.2)"/>
+      <rect x="22" y="70" width="176" height="20" rx="10" fill="url(#${gradId}b)"/>
+      <path d="M55 70 C55 70 52 46 60 40 L90 36 L132 36 C144 36 150 42 150 52 L150 70Z" fill="url(#${gradId}a)"/>
+      <path d="M60 53 L148 53" stroke="rgba(255,255,255,0.3)" stroke-width="3" stroke-linecap="round"/>
+      <defs>
+        <linearGradient id="${gradId}a" x1="52" y1="36" x2="150" y2="70" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="${colors[2]}"/><stop offset="100%" stop-color="${colors[0]}"/>
+        </linearGradient>
+        <linearGradient id="${gradId}b" x1="22" y1="70" x2="198" y2="90" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
+        </linearGradient>
+      </defs>
+    </svg>`,
+    'Caps': `<svg viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="110" cy="108" rx="78" ry="9" fill="rgba(0,0,0,0.2)"/>
+      <path d="M32 80 C32 80 38 36 80 26 C93 22 110 22 127 26 C168 36 178 70 178 80Z" fill="url(#${gradId}a)"/>
+      <rect x="22" y="78" width="148" height="16" rx="8" fill="url(#${gradId}b)"/>
+      <path d="M88 50 Q110 44 132 50" stroke="rgba(255,255,255,0.2)" stroke-width="2" fill="none"/>
+      <defs>
+        <linearGradient id="${gradId}a" x1="32" y1="22" x2="178" y2="80" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
+        </linearGradient>
+        <linearGradient id="${gradId}b" x1="22" y1="78" x2="170" y2="94" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#111"/><stop offset="100%" stop-color="#222"/>
+        </linearGradient>
+      </defs>
+    </svg>`,
+    'Outerwear': `<svg viewBox="0 0 200 175" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M58 26 C58 26 46 16 34 16 L6 36 C4 38 4 42 6 44 L24 56 L24 158 C24 161 26 163 29 163 L82 163 L82 80 L90 80 L90 163 L110 163 L110 80 L118 80 L118 163 L171 163 C174 163 176 161 176 158 L176 56 L194 44 C196 42 196 38 194 36 L166 16 C154 16 142 26 142 26 C130 40 70 40 58 26Z" fill="url(#${gradId}a)"/>
+      <path d="M82 26 L82 163M118 26 L118 163" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+      <path d="M90 80 L110 80" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+      <defs>
+        <linearGradient id="${gradId}a" x1="6" y1="16" x2="196" y2="163" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
+        </linearGradient>
+      </defs>
+    </svg>`
+  };
+  return svgs[p.category] || svgs['T-Shirts'];
+}
+
+function getBrandColors(p) {
+  const palettes = {
+    'On Running':           ['#2d7dd2','#1a5fa8','#5fa8e8'],
+    'Nike':                 ['#f5a623','#e8553e','#f5c842'],
+    'Gymshark':             ['#1a1a2e','#16213e','#0f3460'],
+    'Adidas':               ['#111111','#333333','#555555'],
+    'Crocs':                ['#4caf50','#388e3c','#81c784'],
+    'Vans':                 ['#c0392b','#922b21','#e74c3c'],
+    'Jordan':               ['#e74c3c','#c0392b','#f1948a'],
+    'Alexander McQueen':    ['#c9a227','#a07818','#f5e27a'],
+    'New Era':              ['#1a3a5c','#0f2540','#2e5f8a'],
+    'Fear of God Essentials':['#8d6e63','#6d4c41','#bcaaa4'],
+    'Shoo Exclusive':       ['#f5a623','#e8553e','#f5c842'],
+  };
+  return palettes[p.brand] || ['#555','#333','#777'];
+}
+
 // ── RENDER ──
 function renderProducts(list) {
   const grid = document.getElementById('productsGrid');
@@ -18,11 +125,12 @@ function renderProducts(list) {
     const stockStatus = totalStock === 0 ? 'out' : totalStock <= 5 ? 'low' : 'in';
     const stockLabel = totalStock === 0 ? 'Out of Stock' : totalStock <= 5 ? `Only ${totalStock} left` : 'In Stock';
     const stockClass = stockStatus === 'out' ? 'stock-out' : stockStatus === 'low' ? 'stock-low' : 'stock-in';
+    const colors = getBrandColors(p);
     return `
     <div class="product-card ${stockStatus === 'out' ? 'sold-out' : ''}" data-id="${p.id}">
       ${p.badge ? `<span class="product-badge badge-${p.badge.toLowerCase().replace(/\s/g,'-')}">${p.badge}</span>` : ''}
-      <div class="product-thumb" onclick="openModal(${p.id})">
-        <div class="product-emoji">${p.emoji}</div>
+      <div class="product-thumb" onclick="openModal(${p.id})" style="background:linear-gradient(135deg,${colors[1]}22,${colors[0]}18)">
+        <div class="product-svg-wrap">${getProductSVG(p)}</div>
         <div class="product-brand-logo">${p.brand}</div>
       </div>
       <div class="product-info">
@@ -102,9 +210,9 @@ function openModal(id) {
   const modal = document.getElementById('productModal');
   const inner = document.getElementById('modalInner');
   inner.innerHTML = `
-    <div class="modal-left">
+    <div class="modal-left" style="background:linear-gradient(135deg,${getBrandColors(p)[1]}33,${getBrandColors(p)[0]}22)">
       <div class="modal-thumb">
-        <div class="modal-emoji">${p.emoji}</div>
+        <div class="modal-svg-wrap">${getProductSVG(p)}</div>
         <div class="modal-brand-bg">${p.brand}</div>
       </div>
       ${p.badge ? `<span class="product-badge badge-${p.badge.toLowerCase().replace(/\s/g,'-')}">${p.badge}</span>` : ''}

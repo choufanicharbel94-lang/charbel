@@ -163,32 +163,63 @@ img { max-width: 100%; display: block; }
 
 /* ── CATEGORIES ── */
 .categories { padding: 100px 0; }
-.categories-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
-}
+.categories-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
 .cat-card {
   background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 32px 24px;
-  cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  border-radius: var(--radius); overflow: hidden;
+  cursor: pointer; transition: all 0.3s; position: relative;
+  display: flex; flex-direction: column;
 }
-.cat-card::before {
-  content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 0.3s;
+.cat-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+
+.cat-visual {
+  position: relative; height: 160px; display: flex; align-items: center;
+  justify-content: center; overflow: hidden; background: var(--dark);
 }
-.cat-shoes::before { background: linear-gradient(135deg, rgba(245,166,35,0.1), transparent); }
-.cat-shirts::before { background: linear-gradient(135deg, rgba(59,130,246,0.1), transparent); }
-.cat-shorts::before { background: linear-gradient(135deg, rgba(34,197,94,0.1), transparent); }
-.cat-pants::before { background: linear-gradient(135deg, rgba(168,85,247,0.1), transparent); }
-.cat-slides::before { background: linear-gradient(135deg, rgba(232,85,62,0.1), transparent); }
-.cat-caps::before { background: linear-gradient(135deg, rgba(234,179,8,0.1), transparent); }
-.cat-outerwear::before { background: linear-gradient(135deg, rgba(20,184,166,0.1), transparent); }
-.cat-all::before { background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent); }
-.cat-card:hover { transform: translateY(-4px); border-color: var(--border-light); box-shadow: var(--shadow); }
-.cat-card:hover::before { opacity: 1; }
-.cat-icon { font-size: 36px; margin-bottom: 8px; }
-.cat-card h3 { font-size: 18px; font-weight: 700; }
-.cat-card p { font-size: 13px; color: var(--gray); }
-.cat-count { font-size: 11px; color: var(--accent); font-weight: 600; margin-top: 4px; }
+.cat-visual svg {
+  width: 85%; max-height: 130px; transition: transform 0.4s ease;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));
+}
+.cat-card:hover .cat-visual svg { transform: scale(1.08) translateY(-4px); }
+
+.cat-glow {
+  position: absolute; width: 120px; height: 120px; border-radius: 50%;
+  filter: blur(40px); opacity: 0; transition: opacity 0.4s; pointer-events: none;
+}
+.cat-card:hover .cat-glow { opacity: 0.5; }
+.cat-glow-orange { background: #f5a623; }
+.cat-glow-blue   { background: #3b82f6; }
+.cat-glow-green  { background: #22c55e; }
+.cat-glow-purple { background: #a855f7; }
+.cat-glow-red    { background: #e8553e; }
+.cat-glow-yellow { background: #eab308; }
+.cat-glow-teal   { background: #14b8a6; }
+.cat-glow-white  { background: #ffffff; }
+
+.cat-info {
+  padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 4px;
+  border-top: 1px solid var(--border);
+}
+.cat-info h3 { font-size: 16px; font-weight: 700; }
+.cat-info p  { font-size: 12px; color: var(--gray); }
+.cat-count   { font-size: 11px; color: var(--accent); font-weight: 600; margin-top: 2px; }
+
+/* All-items grid preview */
+.cat-all-visual { background: var(--dark); gap: 8px; }
+.all-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  padding: 16px; width: 100%;
+}
+.all-mini {
+  height: 52px; border-radius: 8px; display: block;
+  transition: transform 0.3s;
+}
+.cat-card:hover .all-mini { transform: scale(1.05); }
+.shoe-mini  { background: linear-gradient(135deg, #f5a623, #e8553e); }
+.shirt-mini { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.short-mini { background: linear-gradient(135deg, #22c55e, #15803d); }
+.cap-mini   { background: linear-gradient(135deg, #eab308, #a16207); }
 
 /* ── PRODUCTS ── */
 .products-section { padding: 80px 0 120px; }
@@ -237,13 +268,21 @@ img { max-width: 100%; display: block; }
 .product-thumb {
   height: 200px; display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden; cursor: pointer;
-  background: linear-gradient(135deg, var(--dark), var(--card));
+  transition: background 0.3s;
 }
-.product-emoji { font-size: 80px; line-height: 1; transition: transform 0.3s; }
-.product-card:hover .product-emoji { transform: scale(1.1) rotate(-5deg); }
+.product-svg-wrap {
+  width: 88%; height: 100%; display: flex; align-items: center; justify-content: center;
+  transition: transform 0.4s ease;
+}
+.product-svg-wrap svg {
+  width: 100%; max-height: 160px;
+  filter: drop-shadow(0 6px 20px rgba(0,0,0,0.5));
+  transition: transform 0.4s ease;
+}
+.product-card:hover .product-svg-wrap svg { transform: scale(1.08) translateY(-4px); }
 .product-brand-logo {
   position: absolute; bottom: 10px; right: 12px;
-  font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--border-light);
+  font-size: 10px; font-weight: 700; letter-spacing: 2px; color: rgba(255,255,255,0.15);
   text-transform: uppercase;
 }
 .product-info { padding: 16px; }
@@ -303,9 +342,10 @@ img { max-width: 100%; display: block; }
   display: flex; align-items: center; justify-content: center;
   border-radius: 20px 0 0 20px; padding: 40px; position: relative; flex-direction: column;
 }
-.modal-thumb { display: flex; align-items: center; justify-content: center; flex-direction: column; }
-.modal-emoji { font-size: 120px; line-height: 1; }
-.modal-brand-bg { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 4px; color: var(--border-light); margin-top: 16px; }
+.modal-thumb { display: flex; align-items: center; justify-content: center; flex-direction: column; width: 100%; }
+.modal-svg-wrap { width: 90%; display: flex; align-items: center; justify-content: center; }
+.modal-svg-wrap svg { width: 100%; max-height: 200px; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5)); }
+.modal-brand-bg { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 4px; color: rgba(255,255,255,0.18); margin-top: 16px; }
 .modal-right { padding: 40px; display: flex; flex-direction: column; gap: 20px; }
 .modal-brand { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; }
 .modal-name { font-size: 26px; font-weight: 800; line-height: 1.2; }

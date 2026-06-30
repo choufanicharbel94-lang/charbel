@@ -381,33 +381,20 @@
     </div>
   </section>
 
-  <!-- SPOTLIGHT -->
+  <!-- SPOTLIGHT CAROUSEL -->
   <section class="spotlight">
-    <div class="spotlight-bg-text">NEW IN</div>
+    <div class="spotlight-bg-text" id="spotlightBgText">FEATURED</div>
     <div class="container">
-      <div class="spotlight-grid">
-        <div class="spotlight-left reveal-left">
-          <p class="section-eyebrow">Featured Drop</p>
-          <h2 class="spotlight-title">On Running<br/><span class="spotlight-accent">Cloudmonster</span></h2>
-          <p class="spotlight-desc">Maximum cushioning. Monstrous energy return. The CloudTec® sole that defies gravity — now in Beirut.</p>
-          <div class="spotlight-price-row">
-            <span class="spotlight-price">$185</span>
-            <span class="spotlight-badge">New Arrival</span>
-          </div>
-          <div class="spotlight-sizes">
-            <span>39</span><span>40</span><span>41</span><span class="active">42</span><span>43</span><span>44</span><span>45</span>
-          </div>
-          <button class="btn-spotlight" onclick="openModal(1)">Shop Now →</button>
+      <div class="spotlight-carousel-header">
+        <p class="section-eyebrow">Featured Drops</p>
+        <div class="spotlight-nav">
+          <button class="sp-nav-btn" id="spPrev" onclick="spSlide(-1)">&#8592;</button>
+          <div class="sp-dots" id="spDots"></div>
+          <button class="sp-nav-btn" id="spNext" onclick="spSlide(1)">&#8594;</button>
         </div>
-        <div class="spotlight-right reveal-right">
-          <div class="spotlight-img-wrap">
-            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700&h=700&fit=crop&auto=format&q=80" alt="On Running Cloudmonster" />
-            <div class="spotlight-ring ring1"></div>
-            <div class="spotlight-ring ring2"></div>
-            <div class="spotlight-tag tag1">CloudTec®</div>
-            <div class="spotlight-tag tag2">Beirut 🇱🇧</div>
-          </div>
-        </div>
+      </div>
+      <div class="spotlight-track-wrap">
+        <div class="spotlight-track" id="spotlightTrack"></div>
       </div>
     </div>
   </section>

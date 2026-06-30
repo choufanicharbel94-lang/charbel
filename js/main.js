@@ -562,6 +562,93 @@ function toggleSearch() {
 }
 function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
 
+// ── SPOTLIGHT CAROUSEL ──
+let spIndex = 0;
+let spItems = [];
+let spAutoTimer = null;
+
+function initSpotlight() {
+  // Pick featured products: badged ones first, then fill to 6
+  const badged = products.filter(p => p.badge);
+  const rest = products.filter(p => !p.badge);
+  spItems = [...badged, ...rest].slice(0, 6);
+
+  const track = document.getElementById('spotlightTrack');
+  const dots = document.getElementById('spDots');
+  if (!track || !spItems.length) return;
+
+  track.innerHTML = spItems.map((p, i) => {
+    const totalStock = Object.values(p.availability).reduce((a, b) => a + b, 0);
+    const sizesHtml = p.sizes.slice(0, 7).map((s, si) => {
+      const qty = p.availability[s] || 0;
+      return `<span class="${si === 0 ? 'active' : ''} ${qty === 0 ? 'sp-sz-oos' : ''}" data-size="${s}">${s}</span>`;
+    }).join('');
+    return `
+    <div class="sp-slide ${i === 0 ? 'active' : ''}" data-index="${i}">
+      <div class="spotlight-grid">
+        <div class="spotlight-left">
+          <p class="section-eyebrow">${p.category} · ${p.brand}</p>
+          <h2 class="spotlight-title"><span class="spotlight-accent">${p.name}</span></h2>
+          <p class="spotlight-desc">${p.description}</p>
+          <div class="spotlight-price-row">
+            <span class="spotlight-price">$${p.price}</span>
+            ${p.badge ? `<span class="spotlight-badge">${p.badge}</span>` : ''}
+            ${totalStock <= 5 && totalStock > 0 ? `<span class="sp-low-badge">Only ${totalStock} left</span>` : ''}
+          </div>
+          <div class="spotlight-sizes">${sizesHtml}</div>
+          <div class="sp-colors">
+            ${p.colors.map((c, ci) => `<button class="sp-color-chip ${ci === 0 ? 'active' : ''}">${c}</button>`).join('')}
+          </div>
+          <div class="sp-actions">
+            <button class="btn-spotlight" onclick="openModal(${p.id})">Shop Now →</button>
+            <button class="btn-sp-cart" onclick="quickAdd(${p.id})">+ Add to Cart</button>
+          </div>
+        </div>
+        <div class="spotlight-right">
+          <div class="spotlight-img-wrap">
+            <img src="${p.image}" alt="${p.name}" />
+            <div class="spotlight-ring ring1"></div>
+            <div class="spotlight-ring ring2"></div>
+            ${p.badge ? `<div class="spotlight-tag tag1">${p.badge}</div>` : ''}
+            <div class="spotlight-tag tag2">${p.brand}</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  dots.innerHTML = spItems.map((_, i) =>
+    `<button class="sp-dot ${i === 0 ? 'active' : ''}" onclick="spGoTo(${i})"></button>`
+  ).join('');
+
+  spStartAuto();
+}
+
+function spGoTo(idx) {
+  const slides = document.querySelectorAll('.sp-slide');
+  const dots = document.querySelectorAll('.sp-dot');
+  slides[spIndex]?.classList.remove('active');
+  dots[spIndex]?.classList.remove('active');
+  spIndex = (idx + spItems.length) % spItems.length;
+  slides[spIndex]?.classList.add('active');
+  dots[spIndex]?.classList.add('active');
+  const bgText = document.getElementById('spotlightBgText');
+  if (bgText) bgText.textContent = spItems[spIndex]?.category?.toUpperCase() || 'FEATURED';
+}
+
+function spSlide(dir) {
+  spResetAuto();
+  spGoTo(spIndex + dir);
+}
+
+function spStartAuto() {
+  spAutoTimer = setInterval(() => spGoTo(spIndex + 1), 5000);
+}
+function spResetAuto() {
+  clearInterval(spAutoTimer);
+  spStartAuto();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // Use admin-saved data if available, otherwise fall back to default products
   const saved = localStorage.getItem('shoo_products');
@@ -573,4 +660,5 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(e) {}
   }
   renderProducts(products);
+  initSpotlight();
 });

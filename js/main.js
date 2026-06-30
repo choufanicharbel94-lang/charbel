@@ -3,134 +3,22 @@ let currentCategory = 'all';
 let currentSort = 'default';
 let searchQuery = '';
 
-// ── SVG PRODUCT VISUALS ──
-function getProductSVG(p) {
-  const gradId = `g${p.id}`;
-  const colors = getBrandColors(p);
-  const svgs = {
-    'Shoes': `<svg viewBox="0 0 220 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="110" cy="92" rx="88" ry="9" fill="rgba(0,0,0,0.2)"/>
-      <path d="M18 72 C18 72 30 46 58 40 L95 34 L132 30 C155 28 170 34 180 44 C186 52 186 60 178 67 C172 71 158 74 140 75 L24 76 C19 76 16 74 18 72Z" fill="url(#${gradId}a)"/>
-      <path d="M58 40 L65 20 C67 14 75 13 80 17 L98 34" fill="url(#${gradId}b)"/>
-      <path d="M120 52 L168 48" stroke="rgba(255,255,255,0.25)" stroke-width="2.5" stroke-linecap="round"/>
-      <path d="M24 76 L140 75" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
-      <defs>
-        <linearGradient id="${gradId}a" x1="18" y1="28" x2="186" y2="76" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
-        </linearGradient>
-        <linearGradient id="${gradId}b" x1="58" y1="13" x2="98" y2="40" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="${colors[2]}"/><stop offset="100%" stop-color="${colors[0]}"/>
-        </linearGradient>
-      </defs>
-    </svg>`,
-    'T-Shirts': `<svg viewBox="0 0 200 175" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M58 28 C58 28 48 18 36 18 L8 38 C6 40 6 44 8 46 L26 58 L26 155 C26 158 28 160 31 160 L169 160 C172 160 174 158 174 155 L174 58 L192 46 C194 44 194 40 192 38 L164 18 C152 18 142 28 142 28 C132 42 68 42 58 28Z" fill="url(#${gradId}a)"/>
-      <path d="M58 28 C68 42 132 42 142 28" stroke="rgba(255,255,255,0.25)" stroke-width="2"/>
-      <path d="M80 95 L120 95" stroke="rgba(255,255,255,0.15)" stroke-width="10" stroke-linecap="round"/>
-      <defs>
-        <linearGradient id="${gradId}a" x1="8" y1="18" x2="194" y2="160" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
-        </linearGradient>
-      </defs>
-    </svg>`,
-    'Shorts': `<svg viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M18 18 L182 18 C182 18 168 112 158 132 C150 148 140 152 128 152 L106 152 L106 82 L94 82 L94 152 L72 152 C60 152 50 148 42 132 C32 112 18 18 18 18Z" fill="url(#${gradId}a)"/>
-      <rect x="18" y="18" width="164" height="14" rx="7" fill="rgba(255,255,255,0.2)"/>
-      <defs>
-        <linearGradient id="${gradId}a" x1="18" y1="18" x2="182" y2="152" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
-        </linearGradient>
-      </defs>
-    </svg>`,
-    'Pants': `<svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M22 18 L178 18 C178 18 165 118 160 162 C158 180 148 190 136 192 L108 192 L105 112 L95 112 L92 192 L64 192 C52 190 42 180 40 162 C35 118 22 18 22 18Z" fill="url(#${gradId}a)"/>
-      <rect x="22" y="18" width="156" height="14" rx="7" fill="rgba(255,255,255,0.2)"/>
-      <defs>
-        <linearGradient id="${gradId}a" x1="22" y1="18" x2="178" y2="192" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
-        </linearGradient>
-      </defs>
-    </svg>`,
-    'Slides': `<svg viewBox="0 0 220 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="110" cy="94" rx="88" ry="9" fill="rgba(0,0,0,0.2)"/>
-      <rect x="22" y="70" width="176" height="20" rx="10" fill="url(#${gradId}b)"/>
-      <path d="M55 70 C55 70 52 46 60 40 L90 36 L132 36 C144 36 150 42 150 52 L150 70Z" fill="url(#${gradId}a)"/>
-      <path d="M60 53 L148 53" stroke="rgba(255,255,255,0.3)" stroke-width="3" stroke-linecap="round"/>
-      <defs>
-        <linearGradient id="${gradId}a" x1="52" y1="36" x2="150" y2="70" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="${colors[2]}"/><stop offset="100%" stop-color="${colors[0]}"/>
-        </linearGradient>
-        <linearGradient id="${gradId}b" x1="22" y1="70" x2="198" y2="90" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
-        </linearGradient>
-      </defs>
-    </svg>`,
-    'Caps': `<svg viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="110" cy="108" rx="78" ry="9" fill="rgba(0,0,0,0.2)"/>
-      <path d="M32 80 C32 80 38 36 80 26 C93 22 110 22 127 26 C168 36 178 70 178 80Z" fill="url(#${gradId}a)"/>
-      <rect x="22" y="78" width="148" height="16" rx="8" fill="url(#${gradId}b)"/>
-      <path d="M88 50 Q110 44 132 50" stroke="rgba(255,255,255,0.2)" stroke-width="2" fill="none"/>
-      <defs>
-        <linearGradient id="${gradId}a" x1="32" y1="22" x2="178" y2="80" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
-        </linearGradient>
-        <linearGradient id="${gradId}b" x1="22" y1="78" x2="170" y2="94" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#111"/><stop offset="100%" stop-color="#222"/>
-        </linearGradient>
-      </defs>
-    </svg>`,
-    'Outerwear': `<svg viewBox="0 0 200 175" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M58 26 C58 26 46 16 34 16 L6 36 C4 38 4 42 6 44 L24 56 L24 158 C24 161 26 163 29 163 L82 163 L82 80 L90 80 L90 163 L110 163 L110 80 L118 80 L118 163 L171 163 C174 163 176 161 176 158 L176 56 L194 44 C196 42 196 38 194 36 L166 16 C154 16 142 26 142 26 C130 40 70 40 58 26Z" fill="url(#${gradId}a)"/>
-      <path d="M82 26 L82 163M118 26 L118 163" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
-      <path d="M90 80 L110 80" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
-      <defs>
-        <linearGradient id="${gradId}a" x1="6" y1="16" x2="196" y2="163" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="${colors[0]}"/><stop offset="100%" stop-color="${colors[1]}"/>
-        </linearGradient>
-      </defs>
-    </svg>`
-  };
-  return svgs[p.category] || svgs['T-Shirts'];
-}
-
-function getBrandColors(p) {
-  const palettes = {
-    'On Running':           ['#2d7dd2','#1a5fa8','#5fa8e8'],
-    'Nike':                 ['#f5a623','#e8553e','#f5c842'],
-    'Gymshark':             ['#1a1a2e','#16213e','#0f3460'],
-    'Adidas':               ['#111111','#333333','#555555'],
-    'Crocs':                ['#4caf50','#388e3c','#81c784'],
-    'Vans':                 ['#c0392b','#922b21','#e74c3c'],
-    'Jordan':               ['#e74c3c','#c0392b','#f1948a'],
-    'Alexander McQueen':    ['#c9a227','#a07818','#f5e27a'],
-    'New Era':              ['#1a3a5c','#0f2540','#2e5f8a'],
-    'Fear of God Essentials':['#8d6e63','#6d4c41','#bcaaa4'],
-    'Shoo Exclusive':       ['#f5a623','#e8553e','#f5c842'],
-  };
-  return palettes[p.brand] || ['#555','#333','#777'];
-}
-
-// ── RENDER ──
+// ── RENDER PRODUCTS ──
 function renderProducts(list) {
   const grid = document.getElementById('productsGrid');
   const noResults = document.getElementById('noResults');
-  if (!list.length) {
-    grid.innerHTML = '';
-    noResults.style.display = 'block';
-    return;
-  }
+  if (!list.length) { grid.innerHTML = ''; noResults.style.display = 'block'; return; }
   noResults.style.display = 'none';
   grid.innerHTML = list.map(p => {
     const totalStock = Object.values(p.availability).reduce((a, b) => a + b, 0);
     const stockStatus = totalStock === 0 ? 'out' : totalStock <= 5 ? 'low' : 'in';
     const stockLabel = totalStock === 0 ? 'Out of Stock' : totalStock <= 5 ? `Only ${totalStock} left` : 'In Stock';
     const stockClass = stockStatus === 'out' ? 'stock-out' : stockStatus === 'low' ? 'stock-low' : 'stock-in';
-    const colors = getBrandColors(p);
     return `
     <div class="product-card ${stockStatus === 'out' ? 'sold-out' : ''}" data-id="${p.id}">
       ${p.badge ? `<span class="product-badge badge-${p.badge.toLowerCase().replace(/\s/g,'-')}">${p.badge}</span>` : ''}
-      <div class="product-thumb" onclick="openModal(${p.id})" style="background:linear-gradient(135deg,${colors[1]}22,${colors[0]}18)">
-        <div class="product-svg-wrap">${getProductSVG(p)}</div>
+      <div class="product-thumb" onclick="openModal(${p.id})">
+        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'" />
         <div class="product-brand-logo">${p.brand}</div>
       </div>
       <div class="product-info">
@@ -146,7 +34,7 @@ function renderProducts(list) {
           <span class="sizes-label">Sizes:</span>
           ${p.sizes.slice(0, 5).map(s => {
             const qty = p.availability[s] || 0;
-            return `<span class="size-chip ${qty === 0 ? 'size-oos' : ''}" title="${qty === 0 ? 'Out of stock' : qty + ' left'}">${s}</span>`;
+            return `<span class="size-chip ${qty === 0 ? 'size-oos' : ''}">${s}</span>`;
           }).join('')}
           ${p.sizes.length > 5 ? `<span class="size-more">+${p.sizes.length - 5}</span>` : ''}
         </div>
@@ -183,14 +71,11 @@ function getFilteredProducts() {
 function filterByCategory(cat) {
   currentCategory = cat;
   document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-  const tabs = document.querySelectorAll('.filter-tab');
-  tabs.forEach(t => {
+  document.querySelectorAll('.filter-tab').forEach(t => {
     if ((cat === 'all' && t.textContent === 'All') || t.textContent === cat) t.classList.add('active');
   });
   renderProducts(getFilteredProducts());
-  if (cat !== 'all') {
-    document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
-  }
+  if (cat !== 'all') document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
 }
 
 function filterProducts() {
@@ -203,18 +88,14 @@ function sortProducts(val) {
   renderProducts(getFilteredProducts());
 }
 
-// ── MODAL ──
+// ── PRODUCT MODAL ──
 function openModal(id) {
   const p = products.find(x => x.id === id);
   if (!p) return;
   const modal = document.getElementById('productModal');
-  const inner = document.getElementById('modalInner');
-  inner.innerHTML = `
-    <div class="modal-left" style="background:linear-gradient(135deg,${getBrandColors(p)[1]}33,${getBrandColors(p)[0]}22)">
-      <div class="modal-thumb">
-        <div class="modal-svg-wrap">${getProductSVG(p)}</div>
-        <div class="modal-brand-bg">${p.brand}</div>
-      </div>
+  document.getElementById('modalInner').innerHTML = `
+    <div class="modal-left">
+      <img src="${p.image}" alt="${p.name}" class="modal-img" onerror="this.style.background='#222'" />
       ${p.badge ? `<span class="product-badge badge-${p.badge.toLowerCase().replace(/\s/g,'-')}">${p.badge}</span>` : ''}
     </div>
     <div class="modal-right">
@@ -222,53 +103,45 @@ function openModal(id) {
       <h2 class="modal-name">${p.name}</h2>
       <p class="modal-desc">${p.description}</p>
       <div class="modal-price">$${p.price}</div>
-
       <div class="modal-section">
         <label class="modal-label">Color</label>
-        <div class="modal-colors" id="modalColors">
-          ${p.colors.map((c, i) => `<button class="modal-color-btn ${i === 0 ? 'active' : ''}" onclick="selectColor(this)">${c}</button>`).join('')}
+        <div class="modal-colors">
+          ${p.colors.map((c,i) => `<button class="modal-color-btn ${i===0?'active':''}" onclick="selectColor(this)">${c}</button>`).join('')}
         </div>
       </div>
-
       <div class="modal-section">
         <label class="modal-label">Size <span id="selectedSizeLabel"></span></label>
-        <div class="modal-sizes" id="modalSizes">
+        <div class="modal-sizes">
           ${p.sizes.map(s => {
             const qty = p.availability[s] || 0;
-            return `<button class="modal-size-btn ${qty === 0 ? 'oos' : ''}"
-              data-size="${s}" data-qty="${qty}"
-              onclick="${qty > 0 ? 'selectSize(this)' : ''}"
-              ${qty === 0 ? 'disabled' : ''}>
-              ${s}
-              <span class="qty-tip">${qty === 0 ? '✗' : qty <= 3 ? `${qty} left` : '✓'}</span>
+            return `<button class="modal-size-btn ${qty===0?'oos':''}" data-size="${s}" data-qty="${qty}"
+              onclick="${qty>0?'selectSize(this)':''}" ${qty===0?'disabled':''}>
+              ${s}<span class="qty-tip">${qty===0?'✗':qty<=3?`${qty}✓`:'✓'}</span>
             </button>`;
           }).join('')}
         </div>
       </div>
-
       <div class="modal-section">
-        <label class="modal-label">Availability</label>
+        <label class="modal-label">Stock by Size</label>
         <div class="size-availability-table">
           ${p.sizes.map(s => {
             const qty = p.availability[s] || 0;
-            return `<div class="avail-row ${qty === 0 ? 'avail-out' : qty <= 3 ? 'avail-low' : 'avail-good'}">
+            return `<div class="avail-row ${qty===0?'avail-out':qty<=3?'avail-low':'avail-good'}">
               <span>${s}</span>
-              <div class="avail-bar"><div class="avail-fill" style="width:${Math.min(qty * 10, 100)}%"></div></div>
-              <span>${qty === 0 ? 'Out of Stock' : qty <= 3 ? `${qty} left` : `${qty} in stock`}</span>
+              <div class="avail-bar"><div class="avail-fill" style="width:${Math.min(qty*10,100)}%"></div></div>
+              <span>${qty===0?'Out of Stock':qty<=3?`${qty} left`:`${qty} in stock`}</span>
             </div>`;
           }).join('')}
         </div>
       </div>
-
       <div class="modal-actions">
         <button class="btn-modal-cart" onclick="addToCartFromModal(${p.id})">Add to Cart</button>
         <button class="btn-modal-whatsapp" onclick="whatsappProduct(${p.id})">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
-          Order via WhatsApp
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          WhatsApp
         </button>
       </div>
-    </div>
-  `;
+    </div>`;
   modal.classList.add('active');
   document.getElementById('modalOverlay').classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -285,7 +158,6 @@ function selectSize(btn) {
   btn.classList.add('selected');
   document.getElementById('selectedSizeLabel').textContent = `— ${btn.dataset.size}`;
 }
-
 function selectColor(btn) {
   document.querySelectorAll('.modal-color-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -304,9 +176,7 @@ function addToCartFromModal(id) {
   const selectedSizeBtn = document.querySelector('.modal-size-btn.selected');
   const selectedColorBtn = document.querySelector('.modal-color-btn.active');
   if (!selectedSizeBtn) { showToast('Please select a size', 'error'); return; }
-  const size = selectedSizeBtn.dataset.size;
-  const color = selectedColorBtn ? selectedColorBtn.textContent : '';
-  addToCart(id, size, color);
+  addToCart(id, selectedSizeBtn.dataset.size, selectedColorBtn ? selectedColorBtn.textContent : '');
   closeModal();
   openCart();
 }
@@ -315,16 +185,21 @@ function addToCart(id, size, color) {
   const p = products.find(x => x.id === id);
   const key = `${id}-${size}-${color}`;
   const existing = cart.find(i => i.key === key);
-  if (existing) {
-    existing.qty++;
-  } else {
-    cart.push({ key, id, name: p.name, brand: p.brand, price: p.price, size, color, qty: 1, emoji: p.emoji });
-  }
+  if (existing) existing.qty++;
+  else cart.push({ key, id, name: p.name, brand: p.brand, price: p.price, size, color, qty: 1, image: p.image });
   updateCartUI();
 }
 
 function removeFromCart(key) {
   cart = cart.filter(i => i.key !== key);
+  updateCartUI();
+}
+
+function changeQty(key, delta) {
+  const item = cart.find(i => i.key === key);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart = cart.filter(i => i.key !== key);
   updateCartUI();
 }
 
@@ -343,11 +218,16 @@ function updateCartUI() {
   document.getElementById('cartTotal').textContent = `$${total}`;
   itemsEl.innerHTML = cart.map(i => `
     <div class="cart-item">
-      <div class="cart-item-emoji">${i.emoji}</div>
+      <img src="${i.image}" alt="${i.name}" class="cart-item-img" onerror="this.style.background='#222'" />
       <div class="cart-item-info">
         <span class="cart-item-name">${i.name}</span>
         <span class="cart-item-meta">${i.color} · Size ${i.size}</span>
-        <span class="cart-item-price">$${i.price} × ${i.qty}</span>
+        <div class="cart-item-qty-row">
+          <button class="qty-btn" onclick="changeQty('${i.key}',-1)">−</button>
+          <span class="qty-val">${i.qty}</span>
+          <button class="qty-btn" onclick="changeQty('${i.key}',1)">+</button>
+          <span class="cart-item-price">$${i.price * i.qty}</span>
+        </div>
       </div>
       <button class="cart-item-remove" onclick="removeFromCart('${i.key}')">✕</button>
     </div>
@@ -359,25 +239,296 @@ function openCart() {
   document.getElementById('cartOverlay').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
-
 function closeCart() {
   document.getElementById('cartSidebar').classList.remove('open');
   document.getElementById('cartOverlay').classList.remove('active');
   document.body.style.overflow = '';
 }
 
-function whatsappOrder() {
-  const lines = cart.map(i => `• ${i.name} (${i.color}, Size ${i.size}) x${i.qty} — $${i.price * i.qty}`).join('\n');
-  const total = cart.reduce((a, i) => a + i.price * i.qty, 0);
-  const msg = encodeURIComponent(`Hi Shoo Sports! I'd like to order:\n\n${lines}\n\nTotal: $${total}\n\nPlease confirm availability and delivery details. Thank you!`);
-  window.open(`https://wa.me/96176123456?text=${msg}`, '_blank');
+// ── CHECKOUT ──
+let checkoutStep = 1;
+let checkoutData = {};
+
+function openCheckout() {
+  if (!cart.length) { showToast('Your cart is empty', 'error'); return; }
+  closeCart();
+  checkoutStep = 1;
+  checkoutData = {};
+  document.getElementById('checkoutModal').classList.add('active');
+  document.getElementById('checkoutOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  renderCheckoutStep();
 }
+
+function closeCheckout() {
+  document.getElementById('checkoutModal').classList.remove('active');
+  document.getElementById('checkoutOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function renderCheckoutStep() {
+  const total = cart.reduce((a, i) => a + i.price * i.qty, 0);
+  const stepIndicator = `
+    <div class="checkout-steps">
+      ${['Info','Payment','Confirm'].map((s,i) => `
+        <div class="step-dot ${checkoutStep > i+1 ? 'done' : checkoutStep === i+1 ? 'active' : ''}">
+          <span>${checkoutStep > i+1 ? '✓' : i+1}</span>
+          <label>${s}</label>
+        </div>
+        ${i < 2 ? '<div class="step-line '+(checkoutStep > i+1 ? 'done' : '')+'"></div>' : ''}
+      `).join('')}
+    </div>`;
+
+  let body = '';
+
+  if (checkoutStep === 1) {
+    body = `
+      <h2 class="checkout-title">Delivery Info</h2>
+      <div class="checkout-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="f_name" placeholder="Ahmad Khalil" value="${checkoutData.name||''}" />
+          </div>
+          <div class="form-group">
+            <label>Phone Number *</label>
+            <input type="tel" id="f_phone" placeholder="+961 71 123 456" value="${checkoutData.phone||''}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email (optional)</label>
+          <input type="email" id="f_email" placeholder="ahmad@email.com" value="${checkoutData.email||''}" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>City / Area *</label>
+            <select id="f_city">
+              <option value="">Select city...</option>
+              ${['Beirut','Saida','Tripoli','Tyre','Nabatieh','Sidon','Byblos','Jounieh','Zahle','Baalbek','Aley','Chouf','Other'].map(c =>
+                `<option value="${c}" ${checkoutData.city===c?'selected':''}>${c}</option>`).join('')}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Area / District *</label>
+            <input type="text" id="f_area" placeholder="Haret Saida, Achrafieh..." value="${checkoutData.area||''}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Street & Building *</label>
+          <input type="text" id="f_address" placeholder="Main St, Building XYZ, Floor 3" value="${checkoutData.address||''}" />
+        </div>
+        <div class="form-group">
+          <label>Delivery Notes</label>
+          <textarea id="f_notes" placeholder="Landmark, additional instructions..." rows="2">${checkoutData.notes||''}</textarea>
+        </div>
+      </div>
+      <div class="checkout-order-mini">
+        <p class="order-mini-label">Your order (${cart.reduce((a,i)=>a+i.qty,0)} items) — <strong>$${total}</strong></p>
+      </div>
+      <button class="btn-checkout-next" onclick="goStep2()">Continue to Payment →</button>`;
+  }
+
+  else if (checkoutStep === 2) {
+    body = `
+      <h2 class="checkout-title">Payment Method</h2>
+      <div class="payment-options">
+        <label class="pay-option ${checkoutData.payMethod==='card'?'selected':''}">
+          <input type="radio" name="payMethod" value="card" ${checkoutData.payMethod==='card'?'checked':''} onchange="selectPayMethod('card')" />
+          <div class="pay-icon">💳</div>
+          <div class="pay-info"><strong>Pay by Card</strong><p>Visa, Mastercard, AMEX</p></div>
+          <div class="pay-check">✓</div>
+        </label>
+        <label class="pay-option ${checkoutData.payMethod==='cod'?'selected':''}">
+          <input type="radio" name="payMethod" value="cod" ${checkoutData.payMethod==='cod'?'checked':''} onchange="selectPayMethod('cod')" />
+          <div class="pay-icon">💵</div>
+          <div class="pay-info"><strong>Cash on Delivery</strong><p>Pay when your order arrives</p></div>
+          <div class="pay-check">✓</div>
+        </label>
+        <label class="pay-option ${checkoutData.payMethod==='whatsapp'?'selected':''}">
+          <input type="radio" name="payMethod" value="whatsapp" ${checkoutData.payMethod==='whatsapp'?'checked':''} onchange="selectPayMethod('whatsapp')" />
+          <div class="pay-icon" style="background:rgba(37,211,102,0.15)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          </div>
+          <div class="pay-info"><strong>Order via WhatsApp</strong><p>Confirm & pay through chat</p></div>
+          <div class="pay-check">✓</div>
+        </label>
+      </div>
+
+      <div id="cardFormWrap" style="display:${checkoutData.payMethod==='card'?'block':'none'}">
+        <div class="card-form">
+          <div class="card-preview" id="cardPreview">
+            <div class="card-chip">
+              <svg width="30" height="24" viewBox="0 0 30 24"><rect x="0" y="0" width="30" height="24" rx="4" fill="#d4a017"/><rect x="8" y="6" width="14" height="12" rx="2" fill="none" stroke="#a07800" stroke-width="1.5"/><line x1="15" y1="6" x2="15" y2="18" stroke="#a07800" stroke-width="1.5"/><line x1="8" y1="12" x2="22" y2="12" stroke="#a07800" stroke-width="1.5"/></svg>
+            </div>
+            <div class="card-number-display" id="cardNumDisplay">•••• •••• •••• ••••</div>
+            <div class="card-bottom">
+              <div><span class="card-label">CARD HOLDER</span><div class="card-holder-display" id="cardHolderDisplay">FULL NAME</div></div>
+              <div><span class="card-label">EXPIRES</span><div id="cardExpDisplay">MM/YY</div></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Card Number *</label>
+            <input type="text" id="f_cardnum" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNum(this)" value="${checkoutData.cardnum||''}" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Cardholder Name *</label>
+              <input type="text" id="f_cardholder" placeholder="Ahmad Khalil" oninput="document.getElementById('cardHolderDisplay').textContent=this.value.toUpperCase()||'FULL NAME'" value="${checkoutData.cardholder||''}" />
+            </div>
+            <div class="form-group">
+              <label>Expiry *</label>
+              <input type="text" id="f_expiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)" value="${checkoutData.expiry||''}" />
+            </div>
+            <div class="form-group">
+              <label>CVV *</label>
+              <input type="password" id="f_cvv" placeholder="•••" maxlength="4" value="${checkoutData.cvv||''}" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="checkout-nav">
+        <button class="btn-checkout-back" onclick="checkoutStep=1;renderCheckoutStep()">← Back</button>
+        <button class="btn-checkout-next" onclick="goStep3()">Review Order →</button>
+      </div>`;
+  }
+
+  else if (checkoutStep === 3) {
+    const payLabels = { card: '💳 Card Payment', cod: '💵 Cash on Delivery', whatsapp: '💬 WhatsApp' };
+    body = `
+      <h2 class="checkout-title">Order Review</h2>
+      <div class="review-grid">
+        <div class="review-section">
+          <h4>Delivery To</h4>
+          <p>${checkoutData.name}</p>
+          <p>${checkoutData.phone}</p>
+          <p>${checkoutData.address}, ${checkoutData.area}</p>
+          <p>${checkoutData.city}, Lebanon</p>
+          ${checkoutData.notes ? `<p class="review-notes">"${checkoutData.notes}"</p>` : ''}
+        </div>
+        <div class="review-section">
+          <h4>Payment</h4>
+          <p>${payLabels[checkoutData.payMethod]}</p>
+          ${checkoutData.payMethod==='card' ? `<p>${checkoutData.cardnum} · ${checkoutData.expiry}</p>` : ''}
+        </div>
+      </div>
+      <div class="review-items">
+        <h4>Items</h4>
+        ${cart.map(i => `
+          <div class="review-item">
+            <img src="${i.image}" alt="${i.name}" />
+            <div><span>${i.name}</span><span>${i.color} · Size ${i.size} · ×${i.qty}</span></div>
+            <span class="review-item-price">$${i.price * i.qty}</span>
+          </div>`).join('')}
+        <div class="review-total">
+          <span>Delivery</span><span>Free 🚚</span>
+        </div>
+        <div class="review-total grand">
+          <span>Total</span><span>$${total}</span>
+        </div>
+      </div>
+      <div class="checkout-nav">
+        <button class="btn-checkout-back" onclick="checkoutStep=2;renderCheckoutStep()">← Back</button>
+        <button class="btn-place-order" onclick="placeOrder()">
+          ${checkoutData.payMethod==='whatsapp' ? 'Send WhatsApp Order' : checkoutData.payMethod==='cod' ? 'Place Order (COD)' : 'Pay Now $'+total}
+        </button>
+      </div>`;
+  }
+
+  document.getElementById('checkoutBody').innerHTML = stepIndicator + body;
+  if (checkoutData.payMethod === 'card' && checkoutStep === 2) {
+    setTimeout(() => {
+      const n = document.getElementById('f_cardnum');
+      if (n) { document.getElementById('cardNumDisplay').textContent = n.value || '•••• •••• •••• ••••'; }
+      const h = document.getElementById('f_cardholder');
+      if (h) { document.getElementById('cardHolderDisplay').textContent = h.value.toUpperCase() || 'FULL NAME'; }
+      const e = document.getElementById('f_expiry');
+      if (e) { document.getElementById('cardExpDisplay').textContent = e.value || 'MM/YY'; }
+    }, 50);
+  }
+}
+
+function selectPayMethod(method) {
+  checkoutData.payMethod = method;
+  document.querySelectorAll('.pay-option').forEach(el => el.classList.remove('selected'));
+  event.currentTarget.closest('.pay-option').classList.add('selected');
+  const cardWrap = document.getElementById('cardFormWrap');
+  if (cardWrap) cardWrap.style.display = method === 'card' ? 'block' : 'none';
+}
+
+function formatCardNum(input) {
+  let v = input.value.replace(/\D/g, '').substring(0, 16);
+  input.value = v.replace(/(.{4})/g, '$1 ').trim();
+  const display = document.getElementById('cardNumDisplay');
+  if (display) display.textContent = input.value || '•••• •••• •••• ••••';
+}
+
+function formatExpiry(input) {
+  let v = input.value.replace(/\D/g, '').substring(0, 4);
+  if (v.length > 2) v = v.slice(0, 2) + '/' + v.slice(2);
+  input.value = v;
+  const display = document.getElementById('cardExpDisplay');
+  if (display) display.textContent = v || 'MM/YY';
+}
+
+function goStep2() {
+  const name = document.getElementById('f_name').value.trim();
+  const phone = document.getElementById('f_phone').value.trim();
+  const city = document.getElementById('f_city').value;
+  const area = document.getElementById('f_area').value.trim();
+  const address = document.getElementById('f_address').value.trim();
+  if (!name || !phone || !city || !area || !address) { showToast('Please fill all required fields', 'error'); return; }
+  checkoutData = { ...checkoutData, name, phone, email: document.getElementById('f_email').value, city, area, address, notes: document.getElementById('f_notes').value };
+  checkoutStep = 2;
+  renderCheckoutStep();
+}
+
+function goStep3() {
+  if (!checkoutData.payMethod) { showToast('Please select a payment method', 'error'); return; }
+  if (checkoutData.payMethod === 'card') {
+    const cardnum = document.getElementById('f_cardnum').value.trim();
+    const cardholder = document.getElementById('f_cardholder').value.trim();
+    const expiry = document.getElementById('f_expiry').value.trim();
+    const cvv = document.getElementById('f_cvv').value.trim();
+    if (!cardnum || !cardholder || !expiry || !cvv) { showToast('Please fill all card details', 'error'); return; }
+    checkoutData = { ...checkoutData, cardnum, cardholder, expiry, cvv };
+  }
+  checkoutStep = 3;
+  renderCheckoutStep();
+}
+
+function placeOrder() {
+  const total = cart.reduce((a, i) => a + i.price * i.qty, 0);
+  if (checkoutData.payMethod === 'whatsapp') {
+    const lines = cart.map(i => `• ${i.name} (${i.color}, Size ${i.size}) ×${i.qty} — $${i.price*i.qty}`).join('\n');
+    const msg = encodeURIComponent(`🛍️ New Order from Shoo Sports Website\n\n${lines}\n\n📦 Total: $${total}\n\n👤 ${checkoutData.name}\n📞 ${checkoutData.phone}\n📍 ${checkoutData.address}, ${checkoutData.area}, ${checkoutData.city}\n\n${checkoutData.notes ? '📝 Notes: '+checkoutData.notes : ''}`);
+    window.open(`https://wa.me/96176123456?text=${msg}`, '_blank');
+  }
+  showOrderSuccess(checkoutData.payMethod);
+}
+
+function showOrderSuccess(method) {
+  const icons = { card: '💳', cod: '📦', whatsapp: '💬' };
+  const msgs = { card: 'Your payment is being processed.', cod: 'Pay cash when your order arrives.', whatsapp: 'Check WhatsApp to confirm with the store.' };
+  document.getElementById('checkoutBody').innerHTML = `
+    <div class="order-success">
+      <div class="success-icon">✓</div>
+      <h2>Order Placed!</h2>
+      <p>Thank you, <strong>${checkoutData.name}</strong>!</p>
+      <p>${msgs[method]}</p>
+      <p class="success-delivery">🚚 Delivering to <strong>${checkoutData.area}, ${checkoutData.city}</strong></p>
+      <div class="success-ref">Order ref: #SH${Date.now().toString().slice(-6)}</div>
+      <button class="btn-checkout-next" onclick="closeCheckout();cart=[];updateCartUI()">Continue Shopping</button>
+    </div>`;
+}
+
+function whatsappOrder() { openCheckout(); }
 
 function whatsappProduct(id) {
   const p = products.find(x => x.id === id);
   const selectedSizeBtn = document.querySelector('.modal-size-btn.selected');
   const size = selectedSizeBtn ? selectedSizeBtn.dataset.size : 'TBD';
-  const msg = encodeURIComponent(`Hi Shoo Sports! I'm interested in:\n\n• ${p.name} — Size ${size} — $${p.price}\n\nIs it available? Thank you!`);
+  const msg = encodeURIComponent(`Hi Shoo Sports! 👋\n\nI'm interested in:\n• ${p.name} — Size ${size} — $${p.price}\n\nIs it available? Thank you!`);
   window.open(`https://wa.me/96176123456?text=${msg}`, '_blank');
 }
 
@@ -395,22 +546,13 @@ function showToast(msg, type = 'success') {
 
 // ── NAVBAR ──
 window.addEventListener('scroll', () => {
-  const navbar = document.getElementById('navbar');
-  if (window.scrollY > 50) navbar.classList.add('scrolled');
-  else navbar.classList.remove('scrolled');
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
 });
-
 function toggleSearch() {
   const bar = document.getElementById('searchBar');
   bar.classList.toggle('active');
   if (bar.classList.contains('active')) document.getElementById('searchInput').focus();
 }
+function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
 
-function toggleMenu() {
-  document.getElementById('mobileMenu').classList.toggle('open');
-}
-
-// ── INIT ──
-document.addEventListener('DOMContentLoaded', () => {
-  renderProducts(products);
-});
+document.addEventListener('DOMContentLoaded', () => renderProducts(products));

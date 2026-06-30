@@ -10,6 +10,16 @@
 </head>
 <body>
 
+  <!-- CHECKOUT MODAL -->
+  <div class="checkout-overlay" id="checkoutOverlay" onclick="closeCheckout()"></div>
+  <div class="checkout-modal" id="checkoutModal">
+    <div class="checkout-header">
+      <div class="nav-logo"><span class="logo-shoo">SHOO</span><span class="logo-exclaim">!</span><span class="logo-sports">SPORTS</span></div>
+      <button class="checkout-close" onclick="closeCheckout()">✕</button>
+    </div>
+    <div class="checkout-body" id="checkoutBody"></div>
+  </div>
+
   <!-- CART SIDEBAR -->
   <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
   <aside class="cart-sidebar" id="cartSidebar">
@@ -28,7 +38,7 @@
         <span>Total</span>
         <span id="cartTotal">$0</span>
       </div>
-      <button class="btn-checkout" onclick="whatsappOrder()">Order via WhatsApp</button>
+      <button class="btn-checkout" onclick="openCheckout()">Proceed to Checkout →</button>
     </div>
   </aside>
 

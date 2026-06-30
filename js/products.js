@@ -1,3 +1,5 @@
+const U = id => `https://images.unsplash.com/${id}?w=600&h=600&fit=crop&auto=format&q=80`;
+
 const products = [
   // ── SHOES ──
   {
@@ -11,7 +13,7 @@ const products = [
     availability: { "39": 2, "40": 3, "41": 5, "42": 4, "43": 3, "44": 2, "45": 1 },
     badge: "New",
     description: "Maximum cushioning running shoe with monster-sized CloudTec® pods. Designed for long distances and everyday comfort.",
-    emoji: "🖤"
+    image: U("photo-1542291026-7eec264c27ff")
   },
   {
     id: 2,
@@ -24,7 +26,7 @@ const products = [
     availability: { "38": 1, "39": 3, "40": 4, "41": 5, "42": 3, "43": 2, "44": 0 },
     badge: "Hot",
     description: "Lightweight everyday trainer with CloudTec® technology for effortless speed on any surface.",
-    emoji: "🤍"
+    image: U("photo-1606107557195-0e29a4b5b4aa")
   },
   {
     id: 3,
@@ -37,7 +39,7 @@ const products = [
     availability: { "38": 2, "39": 2, "40": 3, "41": 4, "42": 5, "43": 3, "44": 2, "45": 1 },
     badge: "Trending",
     description: "Training shoe built for gym and street. Versatile, lightweight, and incredibly responsive.",
-    emoji: "💙"
+    image: U("photo-1539185441755-769473a23570")
   },
   {
     id: 4,
@@ -50,7 +52,7 @@ const products = [
     availability: { "39": 1, "40": 2, "41": 4, "42": 5, "43": 4, "44": 2, "45": 1 },
     badge: "New",
     description: "Surfer-inspired running shoe that feels like a cloud with every stride.",
-    emoji: "🩶"
+    image: U("photo-1595950653106-6c9ebd614d3a")
   },
   {
     id: 5,
@@ -63,7 +65,7 @@ const products = [
     availability: { "39": 2, "40": 3, "41": 3, "42": 4, "43": 2, "44": 1 },
     badge: "",
     description: "Sleek knit upper on On's iconic Cloud sole. Perfect for style and comfort.",
-    emoji: "🖤"
+    image: U("photo-1600185365926-3a2ce3cdb9eb")
   },
   {
     id: 6,
@@ -76,7 +78,7 @@ const products = [
     availability: { "38": 1, "39": 2, "40": 3, "41": 5, "42": 4, "43": 3, "44": 2, "45": 0 },
     badge: "Hot",
     description: "Nike's carbon-plate racing shoe built for speed. Featuring React X foam for explosive energy return.",
-    emoji: "💜"
+    image: U("photo-1491553895911-0055eca6402d")
   },
   {
     id: 7,
@@ -89,7 +91,7 @@ const products = [
     availability: { "39": 3, "40": 4, "41": 5, "42": 5, "43": 4, "44": 3, "45": 2, "46": 1 },
     badge: "Classic",
     description: "The iconic AF1 in a premium cream/olive colorway. A true street staple.",
-    emoji: "🤎"
+    image: U("photo-1584735175315-9d5df23e8b5e")
   },
   {
     id: 8,
@@ -102,7 +104,7 @@ const products = [
     availability: { "38": 2, "39": 3, "40": 4, "41": 4, "42": 3, "43": 3, "44": 2, "45": 1 },
     badge: "",
     description: "Nike's most versatile running shoe. React foam cushioning for everyday runs.",
-    emoji: "🩷"
+    image: U("photo-1587563871167-1ee9c731aefb")
   },
   {
     id: 9,
@@ -115,7 +117,7 @@ const products = [
     availability: { "39": 2, "40": 3, "41": 4, "42": 5, "43": 3, "44": 2, "45": 1 },
     badge: "New",
     description: "Adidas Boost technology returns energy with every step. Primeknit upper for a sock-like fit.",
-    emoji: "🖤"
+    image: U("photo-1556906781-9a412961a28c")
   },
   {
     id: 10,
@@ -128,7 +130,7 @@ const products = [
     availability: { "39": 1, "40": 2, "41": 3, "42": 4, "43": 2, "44": 1, "45": 0 },
     badge: "Limited",
     description: "Fearsome traction and precision. Built for the streets as much as the pitch.",
-    emoji: "🟢"
+    image: U("photo-1608231387042-66d1773070a5")
   },
   {
     id: 11,
@@ -141,7 +143,7 @@ const products = [
     availability: { "38": 1, "39": 2, "40": 2, "41": 3, "42": 2, "43": 2, "44": 1, "45": 1 },
     badge: "Luxury",
     description: "The legendary McQ oversized sole sneaker. Premium leather upper, iconic silhouette.",
-    emoji: "🤍"
+    image: U("photo-1549298916-b41d501d3772")
   },
   {
     id: 12,
@@ -154,7 +156,7 @@ const products = [
     availability: { "39": 2, "40": 3, "41": 4, "42": 4, "43": 3, "44": 2, "45": 1 },
     badge: "",
     description: "Nike's largest Air unit yet. Maximum cushioning, modern silhouette.",
-    emoji: "🧡"
+    image: U("photo-1605348532760-6753d2c43329")
   },
 
   // ── SLIDES ──
@@ -169,7 +171,7 @@ const products = [
     availability: { "38": 3, "39": 4, "40": 5, "41": 5, "42": 4, "43": 3, "44": 2, "45": 1 },
     badge: "New",
     description: "CloudTec® cushioning meets slide-on convenience. The most comfortable slide you'll ever wear.",
-    emoji: "🖤"
+    image: U("photo-1603487742131-4160ec999306")
   },
   {
     id: 14,
@@ -182,7 +184,7 @@ const products = [
     availability: { "36": 3, "37": 3, "38": 4, "39": 5, "40": 5, "41": 4, "42": 3, "43": 2, "44": 2, "45": 1 },
     badge: "Hot",
     description: "The iconic Crocs Classic Clog. Lightweight, odour-resistant, and loved worldwide.",
-    emoji: "🩶"
+    image: U("photo-1574201635302-388dd92a4c3f")
   },
   {
     id: 15,
@@ -195,7 +197,7 @@ const products = [
     availability: { "24": 3, "26": 4, "28": 5, "30": 4, "32": 3, "34": 2 },
     badge: "Kids",
     description: "Fun character clogs kids love — Cars and Hello Kitty editions available.",
-    emoji: "🚗"
+    image: U("photo-1574201635302-388dd92a4c3f")
   },
   {
     id: 16,
@@ -208,7 +210,7 @@ const products = [
     availability: { "38": 3, "39": 4, "40": 5, "41": 5, "42": 4, "43": 3, "44": 2, "45": 2 },
     badge: "",
     description: "Soft foam footbed for all-day comfort. Classic Nike Swoosh on the strap.",
-    emoji: "❤️"
+    image: U("photo-1603487742131-4160ec999306")
   },
   {
     id: 17,
@@ -221,7 +223,7 @@ const products = [
     availability: { "37": 2, "38": 3, "39": 4, "40": 5, "41": 4, "42": 3, "43": 2, "44": 1 },
     badge: "",
     description: "LiteRide foam footbed is 40% lighter and 25% softer than standard Croslite foam.",
-    emoji: "🖤"
+    image: U("photo-1574201635302-388dd92a4c3f")
   },
 
   // ── T-SHIRTS ──
@@ -236,7 +238,7 @@ const products = [
     availability: { "XS": 2, "S": 4, "M": 6, "L": 5, "XL": 3, "XXL": 2 },
     badge: "Hot",
     description: "Relaxed oversized fit. Soft heavyweight fabric with subtle Gymshark logo. Perfect for gym and street.",
-    emoji: "🖤"
+    image: U("photo-1521572163474-6864f9cf17ab")
   },
   {
     id: 19,
@@ -249,7 +251,7 @@ const products = [
     availability: { "S": 3, "M": 5, "L": 5, "XL": 4, "XXL": 2 },
     badge: "",
     description: "London Regent Street graphic. Bold Gymshark branding on a premium heavyweight tee.",
-    emoji: "🖤"
+    image: U("photo-1503341504253-dff4815485f1")
   },
   {
     id: 20,
@@ -262,7 +264,7 @@ const products = [
     availability: { "XS": 1, "S": 3, "M": 5, "L": 4, "XL": 3, "XXL": 1 },
     badge: "New",
     description: "Technical performance tee with moisture-wicking fabric and minimal On logo. Understated and refined.",
-    emoji: "🪖"
+    image: U("photo-1576566588028-4147f3842f27")
   },
   {
     id: 21,
@@ -275,7 +277,7 @@ const products = [
     availability: { "XS": 2, "S": 4, "M": 6, "L": 5, "XL": 3, "XXL": 2 },
     badge: "Trending",
     description: "Bold Nike graphic print tee. A must-have streetwear staple.",
-    emoji: "🤍"
+    image: U("photo-1583743814966-8936f5b7be1a")
   },
   {
     id: 22,
@@ -288,7 +290,7 @@ const products = [
     availability: { "XS": 3, "S": 5, "M": 7, "L": 6, "XL": 4, "XXL": 3 },
     badge: "",
     description: "Classic Nike logo tee in multiple colourways. Everyday comfort, everyday style.",
-    emoji: "💚"
+    image: U("photo-1521572163474-6864f9cf17ab")
   },
   {
     id: 23,
@@ -301,7 +303,7 @@ const products = [
     availability: { "XS": 1, "S": 2, "M": 4, "L": 3, "XL": 2, "XXL": 1 },
     badge: "Premium",
     description: "FOG Essentials boxy oversized tee with rubberized text logo. Luxury streetwear.",
-    emoji: "🤎"
+    image: U("photo-1529374255404-311a2a4f1fd9")
   },
   {
     id: 24,
@@ -314,7 +316,7 @@ const products = [
     availability: { "XS": 2, "S": 4, "M": 5, "L": 5, "XL": 3, "XXL": 2 },
     badge: "",
     description: "Vintage-style Vans graphic tee. Off the wall since 1966.",
-    emoji: "🧡"
+    image: U("photo-1583743814966-8936f5b7be1a")
   },
   {
     id: 25,
@@ -327,7 +329,7 @@ const products = [
     availability: { "S": 2, "M": 4, "L": 5, "XL": 3, "XXL": 2 },
     badge: "",
     description: "Oversized Jordan Jumpman tee with heritage feel and premium cotton.",
-    emoji: "🩶"
+    image: U("photo-1503341504253-dff4815485f1")
   },
   {
     id: 26,
@@ -340,7 +342,7 @@ const products = [
     availability: { "S": 3, "M": 5, "L": 4, "XL": 3, "XXL": 1 },
     badge: "Exclusive",
     description: "Bold statement graphic tee. \"Heaven Is Crying For Justice\" print.",
-    emoji: "🤍"
+    image: U("photo-1576566588028-4147f3842f27")
   },
   {
     id: 27,
@@ -353,7 +355,7 @@ const products = [
     availability: { "XS": 2, "S": 4, "M": 6, "L": 5, "XL": 3, "XXL": 2 },
     badge: "",
     description: "Gymshark muscle fit tank. Moisture-wicking fabric, ideal for training sessions.",
-    emoji: "🩶"
+    image: U("photo-1571945153237-4929e783af4a")
   },
 
   // ── SHORTS ──
@@ -368,7 +370,7 @@ const products = [
     availability: { "XS": 2, "S": 4, "M": 6, "L": 5, "XL": 3, "XXL": 2 },
     badge: "Hot",
     description: "Lightweight, breathable training shorts. Deep side pockets and adjustable waistband.",
-    emoji: "🖤"
+    image: U("photo-1591195853828-11db59a44f43")
   },
   {
     id: 29,
@@ -381,7 +383,7 @@ const products = [
     availability: { "XS": 2, "S": 3, "M": 5, "L": 4, "XL": 3, "XXL": 2 },
     badge: "",
     description: "Nike Dri-FIT technology wicks sweat away. Elastic waistband for a secure fit.",
-    emoji: "🖤"
+    image: U("photo-1562886812-a17f6d0d5f7f")
   },
   {
     id: 30,
@@ -394,7 +396,7 @@ const products = [
     availability: { "XS": 1, "S": 3, "M": 4, "L": 3, "XL": 2 },
     badge: "New",
     description: "Ultra-lightweight On Running shorts with integrated liner. Built for running performance.",
-    emoji: "🖤"
+    image: U("photo-1591195853828-11db59a44f43")
   },
   {
     id: 31,
@@ -407,7 +409,7 @@ const products = [
     availability: { "S": 2, "M": 4, "L": 5, "XL": 3, "XXL": 2 },
     badge: "",
     description: "Cozy Jordan fleece shorts with embroidered Jumpman logo.",
-    emoji: "🩶"
+    image: U("photo-1562886812-a17f6d0d5f7f")
   },
   {
     id: 32,
@@ -420,7 +422,7 @@ const products = [
     availability: { "XS": 2, "S": 4, "M": 6, "L": 5, "XL": 3, "XXL": 1 },
     badge: "",
     description: "Versatile Gymshark sport shorts. Great for gym or casual wear.",
-    emoji: "🔵"
+    image: U("photo-1591195853828-11db59a44f43")
   },
 
   // ── PANTS ──
@@ -435,7 +437,7 @@ const products = [
     availability: { "XS": 1, "S": 3, "M": 5, "L": 4, "XL": 3, "XXL": 2 },
     badge: "New",
     description: "Nike tech fleece joggers with tapered fit. Embroidered Swoosh, side zip pockets.",
-    emoji: "🤍"
+    image: U("photo-1624378439575-d8705ad7ae80")
   },
   {
     id: 34,
@@ -448,7 +450,7 @@ const products = [
     availability: { "XS": 1, "S": 2, "M": 4, "L": 3, "XL": 2 },
     badge: "Premium",
     description: "Technical On Running track pants. Lightweight with tapered leg and On branding.",
-    emoji: "🖤"
+    image: U("photo-1542272604-787c3835535d")
   },
   {
     id: 35,
@@ -461,7 +463,7 @@ const products = [
     availability: { "XS": 2, "S": 3, "M": 5, "L": 4, "XL": 3, "XXL": 2 },
     badge: "",
     description: "Gymshark crest logo joggers. Warm, flexible, and stylish.",
-    emoji: "🖤"
+    image: U("photo-1624378439575-d8705ad7ae80")
   },
   {
     id: 36,
@@ -474,7 +476,7 @@ const products = [
     availability: { "XS": 2, "S": 4, "M": 5, "L": 4, "XL": 3, "XXL": 2 },
     badge: "",
     description: "Adidas Tiro 23 track pants. Three-stripe classic with tapered fit.",
-    emoji: "🖤"
+    image: U("photo-1542272604-787c3835535d")
   },
 
   // ── OUTERWEAR ──
@@ -489,7 +491,7 @@ const products = [
     availability: { "XS": 1, "S": 2, "M": 4, "L": 3, "XL": 2, "XXL": 1 },
     badge: "New",
     description: "On Running Climate half-zip. Insulated yet breathable for training in any weather.",
-    emoji: "🤎"
+    image: U("photo-1551488831-00ddcb6c6bd3")
   },
   {
     id: 38,
@@ -502,7 +504,7 @@ const products = [
     availability: { "XS": 2, "S": 3, "M": 5, "L": 4, "XL": 3, "XXL": 2 },
     badge: "",
     description: "Slim-fit Gymshark long sleeve. Moisture-wicking for year-round training.",
-    emoji: "🔵"
+    image: U("photo-1618354691373-d851c5c3a990")
   },
   {
     id: 39,
@@ -515,7 +517,7 @@ const products = [
     availability: { "XS": 1, "S": 2, "M": 3, "L": 2, "XL": 1 },
     badge: "Premium",
     description: "On's signature weather jacket. Wind and water resistant. Built for runners.",
-    emoji: "🖤"
+    image: U("photo-1551488831-00ddcb6c6bd3")
   },
 
   // ── CAPS ──
@@ -530,7 +532,7 @@ const products = [
     availability: { "One Size": 8 },
     badge: "Hot",
     description: "New Era 9Forty NY Yankees cap. Adjustable strap, structured crown.",
-    emoji: "🟢"
+    image: U("photo-1588850561407-ed78c282e89b")
   },
   {
     id: 41,
@@ -543,7 +545,7 @@ const products = [
     availability: { "One Size": 6 },
     badge: "",
     description: "New Era 9Forty LA Dodgers cap. Classic baseball styling.",
-    emoji: "🖤"
+    image: U("photo-1521369909029-2afed882baee")
   },
   {
     id: 42,
@@ -556,7 +558,7 @@ const products = [
     availability: { "One Size": 7 },
     badge: "Trending",
     description: "Nike swoosh bucket hat. Wide brim for sun protection with style.",
-    emoji: "❤️"
+    image: U("photo-1588850561407-ed78c282e89b")
   },
   {
     id: 43,
@@ -569,6 +571,6 @@ const products = [
     availability: { "One Size": 5 },
     badge: "",
     description: "Jordan brand snapback with embroidered Jumpman logo.",
-    emoji: "🖤"
+    image: U("photo-1521369909029-2afed882baee")
   }
 ];

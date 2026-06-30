@@ -20,6 +20,7 @@ function renderProducts(list) {
       <div class="product-thumb" onclick="openModal(${p.id})">
         <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'" />
         <div class="product-brand-logo">${p.brand}</div>
+        <div class="quick-view">Quick View</div>
       </div>
       <div class="product-info">
         <div class="product-meta">

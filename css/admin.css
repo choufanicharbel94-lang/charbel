@@ -373,39 +373,3 @@ select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
 .cat-admin-info { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 .cat-admin-info h4 { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 .cat-admin-footer { margin-top: 24px; }
-
-/* ── DESIGN TAB ── */
-.design-wrap { display: flex; flex-direction: column; gap: 20px; max-width: 760px; }
-.design-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; display: flex; flex-direction: column; gap: 16px; }
-.design-card h3 { font-size: 16px; font-weight: 700; }
-
-.color-field { display: flex; align-items: center; gap: 10px; }
-.color-field input[type="color"] {
-  width: 44px; height: 42px; padding: 2px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-  background: var(--dark); cursor: pointer;
-}
-.color-hex {
-  flex: 1; background: var(--dark); border: 1px solid var(--border); border-radius: var(--radius-sm);
-  padding: 12px 14px; color: var(--white); font-size: 14px; font-family: inherit; outline: none;
-}
-.color-hex:focus { border-color: var(--accent); }
-
-.palette-presets { display: flex; gap: 10px; }
-.palette-chip { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border); cursor: pointer; transition: transform .15s, border-color .15s; padding: 0; }
-.palette-chip:hover { transform: scale(1.1); border-color: var(--white); }
-
-.sections-list { display: flex; flex-direction: column; gap: 8px; }
-.sec-item {
-  display: flex; align-items: center; gap: 12px; padding: 12px 14px;
-  background: var(--dark); border: 1px solid var(--border); border-radius: var(--radius-sm);
-  cursor: grab; transition: all .2s;
-}
-.sec-item:active { cursor: grabbing; }
-.sec-item.sp-dragging { opacity: .4; }
-.sec-item.sp-drag-over { border-color: var(--accent); background: rgba(245,166,35,0.08); }
-.sec-drag { color: var(--gray); font-size: 16px; flex-shrink: 0; }
-.sec-name { flex: 1; font-size: 13px; font-weight: 600; }
-.sec-toggle { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--gray); cursor: pointer; }
-.sec-toggle input { cursor: pointer; }
-
-.design-footer { display: flex; gap: 12px; padding-bottom: 8px; }

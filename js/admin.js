@@ -44,32 +44,19 @@ function initAdmin() {
   renderForm();
 }
 
-// Reflect the configured brand name/mark on the admin's own login + sidebar
-// chrome (but not the storefront's theme colors/fonts — those stay fixed).
-function syncAdminBranding() {
-  const settings = loadSettings();
-  document.querySelectorAll('.logo-shoo').forEach(el => el.textContent = settings.content.brandName);
-  document.querySelectorAll('.logo-exclaim').forEach(el => el.textContent = settings.content.brandMark);
-  document.querySelectorAll('.logo-sports').forEach(el => el.textContent = settings.content.brandSub);
-  const waLink = document.querySelector('.btn-open-wa');
-  if (waLink) waLink.href = `https://wa.me/${settings.content.waNumber}`;
-}
-syncAdminBranding();
-
 // ── TABS ──
 function showTab(name, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  const titles = { products: ['Products', 'Manage your product catalog'], stock: ['Stock Management', 'Click any number to update stock'], add: ['Add Product', 'Add a new product to the store'], categories: ['Categories', 'Edit photos for each category shown on the shop'], spotlight: ['Spotlight Carousel', 'Choose and order which products appear in the featured section'], orders: ['Orders', 'Manage incoming orders'], design: ['Design', 'Customize theme, copy and homepage layout'] };
+  const titles = { products: ['Products', 'Manage your product catalog'], stock: ['Stock Management', 'Click any number to update stock'], add: ['Add Product', 'Add a new product to the store'], categories: ['Categories', 'Edit photos for each category shown on the shop'], spotlight: ['Spotlight Carousel', 'Choose and order which products appear in the featured section'], orders: ['Orders', 'Manage incoming orders'] };
   document.getElementById('tabTitle').textContent = titles[name][0];
   document.getElementById('tabSub').textContent = titles[name][1];
   document.getElementById('topbarActions').style.display = name === 'products' ? 'flex' : 'none';
   if (name === 'add') resetForm();
   if (name === 'categories') renderCatAdmin();
   if (name === 'spotlight') renderSpotlightAdmin();
-  if (name === 'design') renderDesignTab();
 }
 
 // ── PRODUCTS TABLE ──
@@ -689,152 +676,3 @@ function saveCategories() {
   localStorage.setItem(CAT_KEY, JSON.stringify(toSave));
   adminToast('Categories saved! Store updated.');
 }
-
-// ── DESIGN TAB ──
-const PALETTE_PRESETS = [
-  { name: 'Sunset Orange', accent: '#f5a623', accent2: '#e8553e' },
-  { name: 'Electric Blue', accent: '#3b82f6', accent2: '#8b5cf6' },
-  { name: 'Emerald', accent: '#22c55e', accent2: '#0ea5e9' },
-  { name: 'Hot Pink', accent: '#ec4899', accent2: '#a855f7' },
-  { name: 'Crimson', accent: '#ef4444', accent2: '#f59e0b' },
-];
-
-let dsSectionsOrder = [];
-let dsSectionsVisible = {};
-
-function renderDesignTab() {
-  const s = loadSettings();
-
-  document.getElementById('dsAccent').value = s.theme.accent;
-  document.getElementById('dsAccentHex').value = s.theme.accent;
-  document.getElementById('dsAccent2').value = s.theme.accent2;
-  document.getElementById('dsAccent2Hex').value = s.theme.accent2;
-
-  const fontSel = document.getElementById('dsFont');
-  fontSel.innerHTML = Object.keys(FONT_PAIRINGS).map(key =>
-    `<option value="${key}" ${key === s.theme.font ? 'selected' : ''}>${FONT_PAIRINGS[key].label}</option>`
-  ).join('');
-
-  document.getElementById('palettePresets').innerHTML = PALETTE_PRESETS.map(p =>
-    `<button type="button" class="palette-chip" style="background:${p.accent}" title="${p.name}" onclick="applyPalettePreset('${p.accent}','${p.accent2}')" aria-label="${p.name} palette"></button>`
-  ).join('');
-
-  document.getElementById('dsBrandName').value = s.content.brandName;
-  document.getElementById('dsBrandMark').value = s.content.brandMark;
-  document.getElementById('dsBrandSub').value = s.content.brandSub;
-
-  document.getElementById('dsHeroBadge').value = s.content.heroBadge;
-  document.getElementById('dsHeroEyebrow').value = s.content.heroEyebrow;
-  document.getElementById('dsHeroLine1').value = s.content.heroLine1;
-  document.getElementById('dsHeroAccent').value = s.content.heroAccent;
-  document.getElementById('dsHeroLine2').value = s.content.heroLine2;
-  document.getElementById('dsHeroSub').value = s.content.heroSub;
-
-  document.getElementById('dsAboutEyebrow').value = s.content.aboutEyebrow;
-  document.getElementById('dsAboutTitle').value = s.content.aboutTitle;
-  document.getElementById('dsAboutPara1').value = s.content.aboutPara1;
-  document.getElementById('dsAboutPara2').value = s.content.aboutPara2;
-
-  document.getElementById('dsWaNumber').value = s.content.waNumber;
-  document.getElementById('dsIgHandle').value = s.content.igHandle;
-  document.getElementById('dsTtHandle').value = s.content.ttHandle;
-  document.getElementById('dsLocation').value = s.content.location;
-
-  document.getElementById('dsFooterTagline').value = s.content.footerTagline;
-
-  dsSectionsOrder = s.sections.order.slice();
-  dsSectionsVisible = { ...s.sections.visible };
-  renderSectionsList();
-}
-
-function applyPalettePreset(accent, accent2) {
-  document.getElementById('dsAccent').value = accent;
-  document.getElementById('dsAccentHex').value = accent;
-  document.getElementById('dsAccent2').value = accent2;
-  document.getElementById('dsAccent2Hex').value = accent2;
-}
-
-function renderSectionsList() {
-  const el = document.getElementById('sectionsList');
-  el.innerHTML = dsSectionsOrder.map((key, idx) => `
-    <div class="sec-item" draggable="true" data-key="${key}"
-      ondragstart="secDragStart(event,${idx})" ondragover="secDragOver(event)" ondrop="secDrop(event,${idx})" ondragend="secDragEnd()">
-      <span class="sec-drag">⠿</span>
-      <span class="sec-name">${SECTION_LABELS[key] || key}</span>
-      <label class="sec-toggle">
-        <input type="checkbox" ${dsSectionsVisible[key] !== false ? 'checked' : ''} onchange="toggleSectionVisible('${key}',this.checked)" />
-        <span>${dsSectionsVisible[key] !== false ? 'Visible' : 'Hidden'}</span>
-      </label>
-    </div>`).join('');
-}
-
-function toggleSectionVisible(key, val) {
-  dsSectionsVisible[key] = val;
-  renderSectionsList();
-}
-
-let secDragIdx = null;
-function secDragStart(e, idx) { secDragIdx = idx; e.currentTarget.classList.add('sp-dragging'); }
-function secDragEnd() { document.querySelectorAll('.sec-item').forEach(el => el.classList.remove('sp-dragging', 'sp-drag-over')); }
-function secDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('sp-drag-over'); }
-function secDrop(e, toIdx) {
-  e.preventDefault();
-  if (secDragIdx === null || secDragIdx === toIdx) return;
-  const moved = dsSectionsOrder.splice(secDragIdx, 1)[0];
-  dsSectionsOrder.splice(toIdx, 0, moved);
-  secDragIdx = null;
-  renderSectionsList();
-}
-
-function saveDesign() {
-  const accent = document.getElementById('dsAccentHex').value.trim() || document.getElementById('dsAccent').value;
-  const accent2 = document.getElementById('dsAccent2Hex').value.trim() || document.getElementById('dsAccent2').value;
-  if (!/^#[0-9a-fA-F]{6}$/.test(accent) || !/^#[0-9a-fA-F]{6}$/.test(accent2)) {
-    adminToast('Enter valid hex colors (e.g. #f5a623)', 'error');
-    return;
-  }
-
-  const settings = {
-    theme: { accent, accent2, font: document.getElementById('dsFont').value },
-    content: {
-      brandName: document.getElementById('dsBrandName').value.trim() || 'SHOO',
-      brandMark: document.getElementById('dsBrandMark').value.trim() || '!',
-      brandSub: document.getElementById('dsBrandSub').value.trim() || 'SPORTS',
-      heroBadge: document.getElementById('dsHeroBadge').value.trim(),
-      heroEyebrow: document.getElementById('dsHeroEyebrow').value.trim(),
-      heroLine1: document.getElementById('dsHeroLine1').value.trim(),
-      heroAccent: document.getElementById('dsHeroAccent').value.trim(),
-      heroLine2: document.getElementById('dsHeroLine2').value.trim(),
-      heroSub: document.getElementById('dsHeroSub').value,
-      aboutEyebrow: document.getElementById('dsAboutEyebrow').value.trim(),
-      aboutTitle: document.getElementById('dsAboutTitle').value.trim(),
-      aboutPara1: document.getElementById('dsAboutPara1').value.trim(),
-      aboutPara2: document.getElementById('dsAboutPara2').value.trim(),
-      footerTagline: document.getElementById('dsFooterTagline').value.trim(),
-      waNumber: document.getElementById('dsWaNumber').value.trim(),
-      igHandle: document.getElementById('dsIgHandle').value.trim(),
-      ttHandle: document.getElementById('dsTtHandle').value.trim(),
-      location: document.getElementById('dsLocation').value.trim(),
-    },
-    sections: { order: dsSectionsOrder, visible: dsSectionsVisible }
-  };
-
-  saveSettings(settings);
-  syncAdminBranding();
-  adminToast('Design saved! Store updated.');
-}
-
-function resetDesign() {
-  localStorage.removeItem('shoo_site_settings');
-  renderDesignTab();
-  syncAdminBranding();
-  adminToast('Reset to default design');
-}
-
-// keep color swatch <-> hex text input in sync
-document.addEventListener('input', (e) => {
-  if (e.target.id === 'dsAccent') document.getElementById('dsAccentHex').value = e.target.value;
-  if (e.target.id === 'dsAccentHex' && /^#[0-9a-fA-F]{6}$/.test(e.target.value)) document.getElementById('dsAccent').value = e.target.value;
-  if (e.target.id === 'dsAccent2') document.getElementById('dsAccent2Hex').value = e.target.value;
-  if (e.target.id === 'dsAccent2Hex' && /^#[0-9a-fA-F]{6}$/.test(e.target.value)) document.getElementById('dsAccent2').value = e.target.value;
-});

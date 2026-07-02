@@ -258,7 +258,7 @@ function addSizeRow(size='', qty=0) {
   div.innerHTML = `
     <input type="text" class="size-name-input" placeholder="Size" value="${size}" />
     <input type="number" class="size-qty-input" placeholder="Qty" value="${qty}" min="0" />
-    <button onclick="this.parentElement.remove()" class="btn-remove-size">✕</button>`;
+    <button onclick="this.parentElement.remove()" class="btn-remove-size" aria-label="Remove size">✕</button>`;
   document.getElementById('sizesEditor').appendChild(div);
 }
 
@@ -543,7 +543,7 @@ function renderSpSelected() {
         <span class="sp-sel-name">${p.name}</span>
         <span class="sp-sel-meta">${p.brand} · $${p.price}${p.badge ? ' · '+p.badge : ''}</span>
       </div>
-      <button class="sp-sel-remove" onclick="spRemove(${id})">✕</button>
+      <button class="sp-sel-remove" onclick="spRemove(${id})" aria-label="Remove from spotlight">✕</button>
     </div>`;
   }).join('');
 }

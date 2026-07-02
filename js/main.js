@@ -707,4 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderProducts(products);
   renderCategories();
   initSpotlight();
+
+  const copyYear = document.getElementById('copyYear');
+  if (copyYear) copyYear.textContent = new Date().getFullYear();
 });

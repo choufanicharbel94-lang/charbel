@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin — Shoo Sports LB</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0a0a'/%3E%3Ctext x='50' y='68' font-family='Arial,sans-serif' font-size='60' font-weight='900' fill='%23f5a623' text-anchor='middle'%3E!%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/admin.css" />
@@ -63,7 +66,7 @@
         </button>
       </nav>
       <div class="sidebar-bottom">
-        <a href="index.html" target="_blank" class="btn-view-store">View Store ↗</a>
+        <a href="index.html" target="_blank" rel="noopener noreferrer" class="btn-view-store">View Store ↗</a>
         <button class="btn-logout" onclick="logout()">Logout</button>
       </div>
     </aside>
@@ -256,7 +259,7 @@
             <h3>Orders are managed via WhatsApp</h3>
             <p>When customers place orders through the website, they are sent directly to your WhatsApp number. You'll receive a full order summary including items, sizes, colors, total price, and delivery address.</p>
             <p>For card payments and COD orders, you'll need to confirm delivery manually.</p>
-            <a href="https://wa.me/96176123456" target="_blank" class="btn-open-wa">Open WhatsApp Business ↗</a>
+            <a href="https://wa.me/96176123456" target="_blank" rel="noopener noreferrer" class="btn-open-wa">Open WhatsApp Business ↗</a>
           </div>
           <div class="info-card tip-card">
             <span class="info-icon">💡</span>
@@ -274,7 +277,7 @@
   <div class="edit-modal" id="editModal">
     <div class="edit-modal-header">
       <h3 id="editModalTitle">Edit Product</h3>
-      <button onclick="closeEditModal()">✕</button>
+      <button onclick="closeEditModal()" aria-label="Close">✕</button>
     </div>
     <div class="edit-modal-body" id="editModalBody"></div>
   </div>

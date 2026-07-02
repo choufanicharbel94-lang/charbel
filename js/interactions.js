@@ -1,5 +1,7 @@
 /* ── INTERACTIONS.JS — SHOO SPORTS LB ── */
 
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 // ── PAGE LOADER ──
 (function() {
   const loader = document.getElementById('pageLoader');
@@ -15,7 +17,7 @@
 (function() {
   const dot = document.getElementById('cursorDot');
   const ring = document.getElementById('cursorRing');
-  if (!dot || !ring) return;
+  if (!dot || !ring || prefersReducedMotion) return;
 
   let mouseX = 0, mouseY = 0;
   let ringX = 0, ringY = 0;
@@ -81,6 +83,7 @@
 
 // ── 3D CARD TILT ──
 (function() {
+  if (prefersReducedMotion) return;
   function applyTilt(e) {
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
@@ -122,6 +125,7 @@
 (function() {
   function animateCounter(el) {
     const target = parseInt(el.dataset.target, 10);
+    if (prefersReducedMotion) { el.textContent = target.toLocaleString(); return; }
     const duration = 1800;
     const start = performance.now();
     function update(now) {
@@ -151,7 +155,7 @@
 // ── PARALLAX HERO ──
 (function() {
   const orbs = document.querySelectorAll('.hero-orb');
-  if (!orbs.length) return;
+  if (!orbs.length || prefersReducedMotion) return;
   window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
     orbs.forEach((orb, i) => {
@@ -163,6 +167,7 @@
 
 // ── MAGNETIC BUTTONS ──
 (function() {
+  if (prefersReducedMotion) return;
   function applyMagnetic(e) {
     const btn = e.currentTarget;
     const rect = btn.getBoundingClientRect();

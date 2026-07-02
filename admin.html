@@ -64,6 +64,10 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
           Orders
         </button>
+        <button class="nav-item" onclick="showTab('design',this)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+          Design
+        </button>
       </nav>
       <div class="sidebar-bottom">
         <a href="index.html" target="_blank" rel="noopener noreferrer" class="btn-view-store">View Store ↗</a>
@@ -269,6 +273,156 @@
         </div>
       </div>
 
+      <!-- TAB: DESIGN -->
+      <div class="tab-content" id="tab-design">
+        <div class="design-wrap">
+
+          <div class="design-card">
+            <h3>Theme</h3>
+            <p class="tab-desc">Pick an accent color and a type pairing for the storefront. The admin panel itself stays as-is.</p>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Accent Color</label>
+                <div class="color-field">
+                  <input type="color" id="dsAccent" />
+                  <input type="text" id="dsAccentHex" class="color-hex" maxlength="7" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Secondary Accent</label>
+                <div class="color-field">
+                  <input type="color" id="dsAccent2" />
+                  <input type="text" id="dsAccent2Hex" class="color-hex" maxlength="7" />
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Preset Palettes</label>
+              <div class="palette-presets" id="palettePresets"></div>
+            </div>
+            <div class="form-group">
+              <label>Typography</label>
+              <select id="dsFont"></select>
+            </div>
+          </div>
+
+          <div class="design-card">
+            <h3>Brand</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Store Name</label>
+                <input type="text" id="dsBrandName" placeholder="SHOO" />
+              </div>
+              <div class="form-group">
+                <label>Mark</label>
+                <input type="text" id="dsBrandMark" placeholder="!" maxlength="3" />
+              </div>
+              <div class="form-group">
+                <label>Sub-label</label>
+                <input type="text" id="dsBrandSub" placeholder="SPORTS" />
+              </div>
+            </div>
+          </div>
+
+          <div class="design-card">
+            <h3>Hero</h3>
+            <div class="form-group">
+              <label>Badge Text</label>
+              <input type="text" id="dsHeroBadge" placeholder="Now Delivering All Over Lebanon" />
+            </div>
+            <div class="form-group">
+              <label>Eyebrow</label>
+              <input type="text" id="dsHeroEyebrow" placeholder="EST. 2018 · HARET SAIDA, LEBANON" />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Title Line 1</label>
+                <input type="text" id="dsHeroLine1" placeholder="BRING" />
+              </div>
+              <div class="form-group">
+                <label>Title Accent Word</label>
+                <input type="text" id="dsHeroAccent" placeholder="POWER" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Title Line 2</label>
+              <input type="text" id="dsHeroLine2" placeholder="TO YOUR STEPS" />
+            </div>
+            <div class="form-group">
+              <label>Subtitle</label>
+              <textarea id="dsHeroSub" rows="2" placeholder="Premium sneakers, streetwear & sportswear."></textarea>
+              <p class="hint">One line per paragraph line-break.</p>
+            </div>
+          </div>
+
+          <div class="design-card">
+            <h3>About</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Eyebrow</label>
+                <input type="text" id="dsAboutEyebrow" placeholder="Who We Are" />
+              </div>
+              <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="dsAboutTitle" placeholder="Shoo Sports LB" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Paragraph 1</label>
+              <textarea id="dsAboutPara1" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Paragraph 2</label>
+              <textarea id="dsAboutPara2" rows="2"></textarea>
+            </div>
+          </div>
+
+          <div class="design-card">
+            <h3>Contact &amp; Socials</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>WhatsApp Number</label>
+                <input type="text" id="dsWaNumber" placeholder="96176123456" />
+              </div>
+              <div class="form-group">
+                <label>Instagram Handle</label>
+                <input type="text" id="dsIgHandle" placeholder="shoosports.lb" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>TikTok Handle</label>
+                <input type="text" id="dsTtHandle" placeholder="shoosports.lb" />
+              </div>
+              <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="dsLocation" placeholder="Haret Saida, Lebanon" />
+              </div>
+            </div>
+          </div>
+
+          <div class="design-card">
+            <h3>Footer</h3>
+            <div class="form-group">
+              <label>Tagline</label>
+              <input type="text" id="dsFooterTagline" placeholder="Bring Power To Your Steps" />
+            </div>
+          </div>
+
+          <div class="design-card">
+            <h3>Homepage Sections</h3>
+            <p class="tab-desc">Drag to reorder. Toggle off to hide a section on the storefront. Hero and Products always stay in place.</p>
+            <div id="sectionsList" class="sections-list"></div>
+          </div>
+
+          <div class="design-footer">
+            <button class="btn-cancel-form" onclick="resetDesign()">Reset to Default</button>
+            <button class="btn-save-product" onclick="saveDesign()">Save &amp; Publish to Store</button>
+          </div>
+
+        </div>
+      </div>
+
     </main>
   </div>
 
@@ -293,6 +447,7 @@
     </div>
   </div>
 
+  <script src="js/settings.js"></script>
   <script src="js/products.js"></script>
   <script src="js/categories.js"></script>
   <script src="js/admin.js"></script>
